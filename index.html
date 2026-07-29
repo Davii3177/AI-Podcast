@@ -1,0 +1,1018 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+
+  <title>Within Earshot — a podcast about the machines that live with us</title>
+  <meta name="description" content="A conversation show about artificial intelligence where it actually lands: the triage desk, the classroom, the kitchen table. We talk to the people holding it, not the people selling it." />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Within Earshot" />
+  <meta property="og:description" content="A conversation show about artificial intelligence where it actually lands." />
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='3' fill='%23FCFBF6'/%3E%3Cpath d='M9 4v24' stroke='%23DDA49A' stroke-width='1.5'/%3E%3Cpath d='M13 10h13M13 16h13M13 22h9' stroke='%23CCD9E3' stroke-width='1.5' stroke-linecap='round'/%3E%3Ccircle cx='5' cy='8' r='1.6' fill='%23ADAC9C'/%3E%3Ccircle cx='5' cy='16' r='1.6' fill='%23ADAC9C'/%3E%3Ccircle cx='5' cy='24' r='1.6' fill='%23ADAC9C'/%3E%3C/svg%3E" />
+<style>
+  /* ============================================================
+     WITHIN EARSHOT
+     A single committed visual world: a ruled notebook on a desk.
+     Deliberately light-only — no dark variant. The tokens are
+     defined once and never redefined, so the viewer's theme
+     toggle leaves the paper as paper.
+     ============================================================ */
+
+  :root {
+    color-scheme: light;
+
+    --font-voice: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --font-mark: "Cascadia Mono", "Cascadia Code", Consolas, ui-monospace, "SF Mono", Menlo, monospace;
+
+    --desk:        #ADAC9C;
+    --desk-deep:   #9E9D8D;
+    --sheet:       #FCFBF6;
+    --sheet-sunk:  #F4F2E9;
+    --rule-line:   #CCD9E3;
+    --margin-rule: #DDA49A;
+
+    --ink:        #17232C;
+    --ink-soft:   #4C5D68;
+    --ink-faint:  #8B99A2;
+    --pen:        #1D5372;
+    --red-pen:    #A03A2E;
+    --hairline:   #DFDDD1;
+
+    --tab-a: #C7D8E5;
+    --tab-b: #E9C7C1;
+    --tab-c: #E7DCA6;
+    --tab-d: #C8DAC3;
+
+    --u: 30px;              /* baseline unit for every ruled block */
+    --gutter: 92px;
+    --pad-x: clamp(22px, 4vw, 56px);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--desk);
+    background-image: radial-gradient(120% 80% at 50% -10%, rgba(255,255,255,.20), transparent 60%);
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: var(--font-voice);
+    font-size: 17px;
+    line-height: var(--u);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: var(--tab-c); color: var(--ink); }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  [role="slider"]:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid var(--pen);
+    outline-offset: 3px;
+  }
+
+  /* ---------------- the sheet ---------------- */
+
+  .book {
+    max-width: 1000px;
+    margin: clamp(20px, 4vw, 56px) auto clamp(40px, 7vw, 88px);
+    /* extra room on the end side so the divider tongues are never clipped */
+    padding-inline: clamp(12px, 3vw, 28px) 48px;
+  }
+
+  .sheet {
+    position: relative;
+    background: var(--sheet);
+    border: 1px solid var(--hairline);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.6) inset,
+      0 18px 34px -18px rgba(30,34,28,.45),
+      0 2px 6px rgba(30,34,28,.10);
+    padding: clamp(34px, 5vw, 60px) var(--pad-x) clamp(44px, 6vw, 72px) var(--gutter);
+    min-height: 70vh;
+  }
+
+  /* pink margin rule */
+  .sheet::before {
+    content: "";
+    position: absolute;
+    left: calc(var(--gutter) - 26px);
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--margin-rule);
+    opacity: .8;
+  }
+
+  .holes {
+    position: absolute;
+    left: 26px;
+    top: 9%;
+    bottom: 9%;
+    width: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+  .holes i {
+    display: block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--desk-deep);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.35);
+  }
+
+  @media (max-width: 720px) {
+    :root { --gutter: clamp(22px, 4vw, 56px); }
+    .sheet::before, .holes { display: none; }
+    .book { padding-inline: clamp(12px, 3vw, 28px); }
+  }
+
+  /* ---------------- the contents page is one fixed screen ----------------
+     Title group sits at the top, the dividers are pushed to the bottom by
+     margin-top:auto, and type + padding scale off viewport height so the
+     whole page lands inside 100dvh without ever scrolling. The inner views
+     scroll normally; only the home is pinned. */
+
+  body[data-view="contents"] { overflow: hidden; }
+
+  body[data-view="contents"] .book {
+    height: 100vh;
+    height: 100dvh;
+    margin-block: 0;
+    padding-block: clamp(12px, 2.4vh, 42px);
+    display: flex;
+    overflow: auto;
+  }
+  body[data-view="contents"] .sheet {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    padding-block: clamp(18px, 3.2vh, 52px);
+  }
+  body[data-view="contents"] .colophon { display: none; }
+
+  body[data-view="contents"] #view-contents {
+    flex: 1 1 auto;
+    min-height: 0;
+    gap: clamp(9px, 1.9vh, 26px);
+  }
+  body[data-view="contents"] .stack-tight { gap: clamp(4px, 1vh, 14px); }
+
+  body[data-view="contents"] .display {
+    font-size: clamp(27px, min(5.6vw, 7.2vh), 50px);
+  }
+  body[data-view="contents"] .sub {
+    font-size: clamp(15px, min(2.2vw, 2.5vh), 19px);
+    line-height: 1.5;
+  }
+
+  body[data-view="contents"] .contents { margin-top: auto; }
+  body[data-view="contents"] .entry { padding-block: clamp(8px, 1.7vh, 20px); }
+  body[data-view="contents"] .entry .name { font-size: clamp(17px, min(2.7vw, 3vh), 24px); }
+  body[data-view="contents"] .entry .gloss { font-size: clamp(13px, 1.75vh, 15px); line-height: 1.45; }
+  body[data-view="contents"] .entry .tongue { height: clamp(26px, 4.4vh, 40px); }
+
+  .home-foot { margin-top: clamp(8px, 1.6vh, 20px); }
+
+  /* short viewports shed the least load-bearing lines first */
+  @media (max-height: 720px) {
+    body[data-view="contents"] .annot { display: none; }
+  }
+  @media (max-height: 580px) {
+    body[data-view="contents"] .entry .gloss { display: none; }
+    body[data-view="contents"] .home-foot { display: none; }
+  }
+
+  /* ---------------- ruled prose ---------------- */
+  /* Ruling is drawn on the block itself, so every ruled block
+     self-aligns to its own first baseline — no cumulative drift. */
+
+  .ruled {
+    line-height: var(--u);
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent calc(var(--u) - 1px),
+      var(--rule-line) calc(var(--u) - 1px),
+      var(--rule-line) var(--u)
+    );
+    background-position: 0 6px;
+    background-repeat: repeat;
+  }
+
+  /* ---------------- type ---------------- */
+
+  .eyebrow {
+    font-family: var(--font-mark);
+    font-size: 11.5px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    line-height: var(--u);
+    margin: 0;
+  }
+
+  .display {
+    font-size: clamp(33px, 5.6vw, 52px);
+    line-height: 1.06;
+    letter-spacing: -.022em;
+    font-weight: 400;
+    margin: 0;
+    max-width: 17ch;
+    text-wrap: balance;
+  }
+  .display em { font-style: italic; color: var(--red-pen); }
+
+  .head {
+    font-size: clamp(25px, 3.6vw, 34px);
+    line-height: 1.14;
+    letter-spacing: -.016em;
+    font-weight: 400;
+    margin: 0;
+    max-width: 22ch;
+    text-wrap: balance;
+  }
+
+  .sub {
+    font-size: 19px;
+    line-height: var(--u);
+    color: var(--ink-soft);
+    max-width: 44ch;
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .prose { max-width: 62ch; margin: 0; text-wrap: pretty; }
+  .prose + .prose { margin-top: var(--u); }
+
+  .stack { display: flex; flex-direction: column; gap: var(--u); }
+  .stack-tight { display: flex; flex-direction: column; gap: 15px; }
+
+  /* ---------------- margin annotation ---------------- */
+
+  .annot {
+    font-family: var(--font-mark);
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--red-pen);
+    max-width: 30ch;
+    margin: 0;
+    padding-left: 14px;
+    border-left: 2px solid var(--margin-rule);
+  }
+
+  /* ---------------- contents / dashboard ---------------- */
+
+  .contents {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--hairline);
+    margin-right: clamp(0px, 3vw, 34px);
+  }
+
+  .entry {
+    position: relative;
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 2px 20px;
+    align-items: baseline;
+    padding: 20px 4px;
+    border-bottom: 1px solid var(--hairline);
+    text-decoration: none;
+    color: inherit;
+    transition: background .16s ease, transform .16s ease;
+  }
+  .entry:hover { background: var(--sheet-sunk); transform: translateX(4px); }
+
+  .entry .pg {
+    font-family: var(--font-mark);
+    font-size: 12px;
+    letter-spacing: .06em;
+    color: var(--ink-faint);
+    font-variant-numeric: tabular-nums;
+  }
+  .entry .name { font-size: 24px; line-height: 1.2; }
+  .entry .gloss { font-size: 15px; line-height: 1.5; color: var(--ink-soft); max-width: 46ch; }
+
+  /* the divider tongue that sticks out of the page edge */
+  .entry .tongue {
+    position: absolute;
+    right: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 40px;
+    border-radius: 0 4px 4px 0;
+    border: 1px solid var(--hairline);
+    border-left: 0;
+    box-shadow: 2px 2px 5px -3px rgba(30,34,28,.5);
+    transition: width .16s ease;
+  }
+  .entry:hover .tongue { width: 38px; }
+  .entry[data-tab="a"] .tongue { background: var(--tab-a); }
+  .entry[data-tab="b"] .tongue { background: var(--tab-b); }
+  .entry[data-tab="c"] .tongue { background: var(--tab-c); }
+  .entry[data-tab="d"] .tongue { background: var(--tab-d); }
+
+  @media (max-width: 720px) {
+    .entry .tongue { display: none; }
+    .entry { grid-template-columns: 44px minmax(0, 1fr); }
+  }
+
+  /* ---------------- back to contents ---------------- */
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-family: var(--font-mark);
+    font-size: 11.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-decoration: none;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--hairline);
+    align-self: flex-start;
+    transition: color .16s ease, border-color .16s ease;
+  }
+  .back:hover { color: var(--ink); border-bottom-color: var(--pen); }
+
+  /* ---------------- episode ---------------- */
+
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 22px;
+    font-family: var(--font-mark);
+    font-size: 12px;
+    letter-spacing: .05em;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+    margin: 0;
+  }
+  .facts b { font-weight: 400; color: var(--red-pen); }
+
+  /* a card clipped onto the page — deliberately unruled */
+  .card {
+    background: var(--sheet);
+    border: 1px solid var(--hairline);
+    box-shadow: 0 6px 14px -10px rgba(30,34,28,.5);
+    padding: clamp(18px, 2.6vw, 26px);
+    max-width: 720px;
+  }
+
+  .scrub-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    font-family: var(--font-mark);
+    font-size: 11.5px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    line-height: 1.6;
+  }
+  .clock {
+    color: var(--ink);
+    font-size: 13px;
+    letter-spacing: .04em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  #wave {
+    display: block;
+    width: 100%;
+    height: 90px;
+    margin-top: 14px;
+    cursor: ew-resize;
+    touch-action: pan-y;
+  }
+
+  .readout {
+    border-top: 1px solid var(--hairline);
+    margin-top: 16px;
+    padding-top: 16px;
+    display: grid;
+    grid-template-columns: 74px minmax(0, 1fr);
+    gap: 4px 16px;
+    align-content: start;
+    min-height: 130px;
+  }
+  .readout .tc {
+    font-family: var(--font-mark);
+    font-size: 12px;
+    color: var(--ink-faint);
+    font-variant-numeric: tabular-nums;
+    padding-top: 6px;
+  }
+  .readout .said {
+    margin: 0;
+    font-size: 19px;
+    line-height: 1.48;
+    max-width: 46ch;
+  }
+  .readout .who {
+    font-family: var(--font-mark);
+    font-size: 11.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--pen);
+    margin-right: 9px;
+  }
+  .readout[data-speaker="guest"] .who { color: var(--red-pen); }
+
+  .fineprint {
+    font-family: var(--font-mark);
+    font-size: 11.5px;
+    letter-spacing: .06em;
+    color: var(--ink-faint);
+    margin: 0;
+    line-height: 1.7;
+  }
+
+  @media (max-width: 560px) {
+    .readout { grid-template-columns: minmax(0, 1fr); }
+    .readout .tc { padding-top: 0; }
+  }
+
+  /* ---------------- show notes ---------------- */
+
+  .notes { list-style: none; margin: 0; padding: 0; max-width: 58ch; }
+  .notes li {
+    display: grid;
+    grid-template-columns: 62px minmax(0, 1fr);
+    gap: 16px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .notes .at {
+    font-family: var(--font-mark);
+    font-size: 12px;
+    color: var(--ink-faint);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.7;
+  }
+  .notes span:last-child { line-height: 1.55; }
+
+  /* ---------------- people ---------------- */
+
+  .people { display: grid; grid-template-columns: repeat(auto-fit, minmax(258px, 1fr)); gap: 34px; }
+  .person { display: flex; flex-direction: column; gap: 8px; }
+  .person .role {
+    font-family: var(--font-mark);
+    font-size: 11.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .person .nm { font-size: 23px; line-height: 1.2; }
+  .person p { margin: 0; font-size: 16px; line-height: 1.55; color: var(--ink-soft); max-width: 40ch; }
+
+  /* ---------------- listen ---------------- */
+
+  .platforms { display: flex; flex-wrap: wrap; gap: 9px; }
+  .platforms a {
+    font-family: var(--font-mark);
+    font-size: 12px;
+    letter-spacing: .07em;
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--sheet);
+    border: 1px solid var(--hairline);
+    padding: 9px 15px;
+    transition: border-color .16s ease, background .16s ease;
+  }
+  .platforms a:hover { border-color: var(--pen); background: var(--sheet-sunk); }
+
+  .signup { display: flex; flex-wrap: wrap; gap: 9px; max-width: 470px; }
+  .signup input {
+    flex: 1 1 210px;
+    min-width: 0;
+    font-family: var(--font-mark);
+    font-size: 13px;
+    padding: 12px 14px;
+    background: var(--sheet);
+    border: 1px solid var(--hairline);
+    color: var(--ink);
+    border-radius: 0;
+  }
+  .signup input::placeholder { color: var(--ink-faint); }
+  .signup input:focus { border-color: var(--pen); }
+  .signup button {
+    font-family: var(--font-mark);
+    font-size: 12px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 12px 20px;
+    background: var(--ink);
+    color: var(--sheet);
+    border: 1px solid var(--ink);
+    cursor: pointer;
+    transition: background .16s ease, border-color .16s ease;
+  }
+  .signup button:hover { background: var(--pen); border-color: var(--pen); }
+
+  .note-line {
+    font-family: var(--font-mark);
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin: 0;
+    min-height: 1.4em;
+    line-height: 1.6;
+  }
+
+  /* ---------------- views ---------------- */
+
+  .view[hidden] { display: none; }
+  .view { display: flex; flex-direction: column; gap: var(--u); }
+  .view:focus { outline: none; }
+
+  .colophon {
+    max-width: 1000px;
+    margin: 0 auto clamp(28px, 5vw, 56px);
+    padding-inline: clamp(24px, 5vw, 40px);
+    font-family: var(--font-mark);
+    font-size: 11.5px;
+    letter-spacing: .05em;
+    line-height: 1.9;
+    color: #4A4A3C;
+  }
+  .colophon p { margin: 0; max-width: 60ch; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      transition-duration: .001ms !important;
+      animation-duration: .001ms !important;
+    }
+  }
+</style>
+
+</head>
+<body>
+<div class="book">
+  <div class="sheet">
+    <span class="holes" aria-hidden="true"><i></i><i></i><i></i></span>
+
+    <!-- ============ DASHBOARD / CONTENTS ============ -->
+    <section class="view" id="view-contents" tabindex="-1" aria-label="Contents">
+      <div class="stack-tight">
+        <p class="eyebrow">Within Earshot &nbsp;·&nbsp; notebook one &nbsp;·&nbsp; 2026</p>
+        <h1 class="display">The machines moved in. <em>Nobody knocked.</em></h1>
+      </div>
+
+      <p class="sub">
+        A conversation show about artificial intelligence where it actually lands — the triage
+        desk, the classroom, the kitchen table. We talk to the people holding it, not the people
+        selling it.
+      </p>
+
+      <p class="annot">One episode out so far. Everything below is what there is.</p>
+
+      <nav class="contents" aria-label="Sections">
+        <a class="entry" href="#episode" data-tab="a">
+          <span class="pg">p. 01</span>
+          <span class="name">The Episode</span>
+          <span></span>
+          <span class="gloss">
+            Ep. 01 — The Nurse and the Night Shift. 48 min, with a scrubbable transcript.
+          </span>
+          <span class="tongue" aria-hidden="true"></span>
+        </a>
+
+        <a class="entry" href="#hosts" data-tab="b">
+          <span class="pg">p. 09</span>
+          <span class="name">Who's Talking</span>
+          <span></span>
+          <span class="gloss">The two hosts and the producer, and where each of them came from.</span>
+          <span class="tongue" aria-hidden="true"></span>
+        </a>
+
+        <a class="entry" href="#listen" data-tab="c">
+          <span class="pg">p. 14</span>
+          <span class="name">Listen &amp; Subscribe</span>
+          <span></span>
+          <span class="gloss">Podcast apps, the RSS feed, and the letter that follows each episode.</span>
+          <span class="tongue" aria-hidden="true"></span>
+        </a>
+
+        <a class="entry" href="#about" data-tab="d">
+          <span class="pg">p. 18</span>
+          <span class="name">About the Show</span>
+          <span></span>
+          <span class="gloss">Why it exists, how it's made, and the rule we hold each interview to.</span>
+          <span class="tongue" aria-hidden="true"></span>
+        </a>
+      </nav>
+
+      <p class="fineprint home-foot">
+        Independent show, recorded in Providence &middot; Demonstration site — the people and the
+        episode here are invented
+      </p>
+    </section>
+
+    <!-- ============ EPISODE ============ -->
+    <section class="view" id="view-episode" tabindex="-1" hidden aria-label="The Episode">
+      <a class="back" href="#contents">&larr; Contents</a>
+
+      <div class="stack-tight">
+        <p class="facts">
+          <span><b>Ep. 01</b></span>
+          <span>22 July 2026</span>
+          <span>48:12</span>
+        </p>
+        <h2 class="head">The Nurse and the Night Shift</h2>
+      </div>
+
+      <p class="prose ruled">
+        Hollis Nwankwo has been a charge nurse in the same emergency department for eleven years.
+        For the last three, a triage model has assigned every patient a number before they reach
+        the desk. Hollis talks about what it is like to have an opinion about someone you have not
+        met yet — and why, at two in the morning, giving that number up is unthinkable.
+      </p>
+
+      <div class="card">
+        <div class="scrub-head">
+          <span>Waveform — drag to read along</span>
+          <span class="clock" id="clock">00:00 / 48:12</span>
+        </div>
+
+        <canvas id="wave"
+                role="slider"
+                tabindex="0"
+                aria-label="Transcript scrubber for episode 1"
+                aria-valuemin="0"
+                aria-valuemax="2892"
+                aria-valuenow="0"
+                aria-valuetext="00:00"></canvas>
+
+        <div class="readout" id="readout" data-speaker="host" aria-live="polite">
+          <span class="tc" id="ro-time">00:00</span>
+          <p class="said"><span class="who" id="ro-who">Mara</span><span id="ro-text"></span></p>
+        </div>
+
+        <p class="fineprint" style="margin-top: 14px;">
+          Arrow keys nudge 15 seconds &middot; Home and End jump to the edges
+        </p>
+      </div>
+
+      <div class="stack-tight">
+        <p class="eyebrow">In this episode</p>
+        <ul class="notes">
+          <li><span class="at">02:41</span><span>What a bad night looks like from inside the software</span></li>
+          <li><span class="at">07:05</span><span>The score arrives before the patient does</span></li>
+          <li><span class="at">19:48</span><span>The man who came through as a two</span></li>
+          <li><span class="at">31:37</span><span>Fear lives in the body, and the model reads bodies</span></li>
+          <li><span class="at">41:19</span><span>The colleague who is never tired</span></li>
+        </ul>
+      </div>
+
+      <p class="fineprint">
+        Recorded 9 July 2026 in Providence. Produced by Ines Ferreira.
+        Full transcript available with the episode on every podcast app.
+      </p>
+    </section>
+
+    <!-- ============ HOSTS ============ -->
+    <section class="view" id="view-hosts" tabindex="-1" hidden aria-label="Who's Talking">
+      <a class="back" href="#contents">&larr; Contents</a>
+
+      <h2 class="head">Two people who came at this from opposite ends</h2>
+
+      <div class="people">
+        <div class="person">
+          <span class="role">Host</span>
+          <span class="nm">Mara Ostrowski</span>
+          <p>
+            Nine years as a hospital chaplain before this, which is nine years of sitting with
+            people on the worst day of their year. Asks the question everyone in the room is
+            thinking and nobody has said out loud.
+          </p>
+        </div>
+        <div class="person">
+          <span class="role">Host</span>
+          <span class="nm">Devon Achebe</span>
+          <p>
+            Spent six years building recommendation systems, then stopped. Knows exactly how the
+            thing works, which mostly means knowing where people hide behind the phrase
+            &ldquo;it's just math.&rdquo;
+          </p>
+        </div>
+        <div class="person">
+          <span class="role">Producer</span>
+          <span class="nm">Ines Ferreira</span>
+          <p>
+            Cuts the tape and keeps the pauses in. Believes a silence is evidence, and that the
+            most honest four seconds of most interviews happen after the answer.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LISTEN ============ -->
+    <section class="view" id="view-listen" tabindex="-1" hidden aria-label="Listen and Subscribe">
+      <a class="back" href="#contents">&larr; Contents</a>
+
+      <h2 class="head">Wherever you already are</h2>
+
+      <div class="platforms">
+        <a href="#listen">Apple&nbsp;Podcasts</a>
+        <a href="#listen">Spotify</a>
+        <a href="#listen">Overcast</a>
+        <a href="#listen">Pocket&nbsp;Casts</a>
+        <a href="#listen">YouTube</a>
+        <a href="#listen">RSS</a>
+      </div>
+
+      <div class="stack-tight">
+        <p class="eyebrow">The letter</p>
+        <p class="prose">
+          One email the Thursday after each episode: the part of the conversation that did not fit,
+          plus whatever the guest told us to go read.
+        </p>
+      </div>
+
+      <form class="signup" id="signup" novalidate>
+        <label for="email" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;">Email address</label>
+        <input id="email" type="email" name="email" placeholder="you@example.com" autocomplete="email" />
+        <button type="submit">Sign up</button>
+      </form>
+      <p class="note-line" id="signup-note"></p>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section class="view" id="view-about" tabindex="-1" hidden aria-label="About the Show">
+      <a class="back" href="#contents">&larr; Contents</a>
+
+      <h2 class="head">About the show</h2>
+
+      <p class="prose ruled">
+        Most of what gets said about artificial intelligence is said by people with something to
+        launch. Within Earshot is the other conversation: one guest at a time, someone who did not
+        choose this technology but now works next to it every day. A nurse. A teacher. An
+        interpreter. We ask what changed, in ordinary detail, and we stay long enough to get past
+        the first answer.
+      </p>
+
+      <p class="prose ruled">
+        Episodes run forty to sixty minutes and are edited lightly. Nothing is scripted. We keep
+        the pauses in, because the pause is usually where the person is deciding whether to tell
+        you the true version.
+      </p>
+
+      <div class="stack-tight">
+        <p class="eyebrow">The rule</p>
+        <p class="prose">
+          No guest is asked to predict the future. Everyone is asked what happened on a specific
+          day. If an answer can be given at a conference, we have asked the wrong question.
+        </p>
+      </div>
+
+      <p class="annot">
+        Pitch a guest: someone whose job changed and who has not been asked about it.
+      </p>
+    </section>
+
+  </div>
+</div>
+
+<footer class="colophon">
+  <p>
+    Within Earshot is an independent show, recorded in a converted garage in Providence.
+    &copy; 2026. This is a demonstration site — the people and the episode here are invented.
+  </p>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ==========================================================
+     Views — every section is reached from the contents page.
+     There is no persistent nav; the dashboard is the only door.
+     ========================================================== */
+
+  var NAMES = ["contents", "episode", "hosts", "listen", "about"];
+  var views = {};
+  NAMES.forEach(function (n) { views[n] = document.getElementById("view-" + n); });
+
+  var current = "contents";
+
+  function route(fromUser) {
+    var want = (location.hash || "").replace("#", "");
+    if (NAMES.indexOf(want) === -1) { want = "contents"; }
+
+    NAMES.forEach(function (n) { views[n].hidden = (n !== want); });
+    current = want;
+    document.body.setAttribute("data-view", want);
+
+    if (fromUser) {
+      window.scrollTo({ top: 0, behavior: "auto" });
+      views[want].focus({ preventScroll: true });
+    }
+    if (want === "episode") { requestAnimationFrame(draw); }
+  }
+
+  window.addEventListener("hashchange", function () { route(true); });
+
+  /* ==========================================================
+     The one episode — scrub the waveform, read the tape.
+     No audio is faked: the interaction reveals real transcript.
+     ========================================================== */
+
+  var DURATION = 2892; // 48:12
+
+  var markers = [
+    { t: 0,    who: "Mara",   role: "host",  text: "Hollis, before we started recording you said you can tell when the software is having a bad night." },
+    { t: 161,  who: "Hollis", role: "guest", text: "You can. It gets cautious. Suddenly everybody is a five. And then the waiting room is forty people deep and nobody is a five." },
+    { t: 425,  who: "Hollis", role: "guest", text: "The thing nobody warns you about is that the score arrives before the patient does. I have already formed an opinion about a person I have not met." },
+    { t: 802,  who: "Devon",  role: "host",  text: "Does the number ever change your mind once you are actually in the room with someone?" },
+    { t: 1188, who: "Hollis", role: "guest", text: "Once. A man came through as a two — that is bad, that is move now. And he was fine. He was terrified. His heart was doing what a terrified heart does." },
+    { t: 1570, who: "Mara",   role: "host",  text: "So it read fear and returned failure." },
+    { t: 1897, who: "Hollis", role: "guest", text: "It reads the body. Fear lives in the body. That is not a bug — that is the whole problem in one sentence, isn't it." },
+    { t: 2282, who: "Devon",  role: "host",  text: "Would you take it out? If it were up to you, tomorrow." },
+    { t: 2479, who: "Hollis", role: "guest", text: "God, no. At two in the morning on a Saturday it is the only colleague I have who is never tired." },
+    { t: 2756, who: "Mara",   role: "host",  text: "That is the line I keep coming back to. Never tired. We built a thing that is never tired, and then we handed it the door." }
+  ];
+
+  var canvas  = document.getElementById("wave");
+  var ctx     = canvas.getContext("2d");
+  var clock   = document.getElementById("clock");
+  var readout = document.getElementById("readout");
+  var roTime  = document.getElementById("ro-time");
+  var roWho   = document.getElementById("ro-who");
+  var roText  = document.getElementById("ro-text");
+
+  var BAR = 3, GAP = 2;
+  var amps = [];
+  var position = 0;
+
+  function mulberry32(a) {
+    return function () {
+      a = a + 0x6D2B79F5 | 0;
+      var t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  function buildAmps(count) {
+    var rnd = mulberry32(4141);
+    var out = new Array(count);
+    for (var i = 0; i < count; i++) {
+      var p = i / count;
+      var swell = 0.55 + 0.45 * Math.sin(p * Math.PI * 2.7 + 0.6);
+      var phrase = 0.6 + 0.4 * Math.sin(p * Math.PI * 41);
+      var v = Math.pow(rnd(), 1.55) * swell * phrase;
+      if (rnd() > 0.965) { v *= 0.12; }          // breaths and pauses
+      out[i] = Math.max(0.06, Math.min(1, v * 1.25));
+    }
+    return out;
+  }
+
+  function token(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
+  function draw() {
+    var w = canvas.clientWidth;
+    var h = canvas.clientHeight;
+    if (!w || !h) { return; }
+
+    var dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+
+    var count = Math.max(24, Math.floor(w / (BAR + GAP)));
+    if (amps.length !== count) { amps = buildAmps(count); }
+
+    var pen = token("--pen");
+    var faint = token("--ink-faint");
+    var mid = h / 2;
+    var ratio = position / DURATION;
+
+    for (var i = 0; i < count; i++) {
+      var bh = Math.max(2, amps[i] * (h - 6));
+      var passed = (i / count) <= ratio;
+      ctx.fillStyle = passed ? pen : faint;
+      ctx.globalAlpha = passed ? 1 : 0.32;
+      ctx.fillRect(i * (BAR + GAP), mid - bh / 2, BAR, bh);
+    }
+
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = token("--red-pen");
+    ctx.fillRect(Math.min(w - 2, Math.max(0, ratio * w)), 0, 2, h);
+  }
+
+  function fmt(sec) {
+    sec = Math.max(0, Math.round(sec));
+    var m = Math.floor(sec / 60), s = sec % 60;
+    return (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s;
+  }
+
+  function markerAt(t) {
+    var found = markers[0];
+    for (var i = 0; i < markers.length; i++) {
+      if (markers[i].t <= t) { found = markers[i]; } else { break; }
+    }
+    return found;
+  }
+
+  function setPosition(t) {
+    position = Math.max(0, Math.min(DURATION, t));
+    var m = markerAt(position);
+
+    clock.textContent = fmt(position) + " / 48:12";
+    roTime.textContent = fmt(m.t);
+    roWho.textContent = m.who;
+    roText.textContent = m.text;
+    readout.setAttribute("data-speaker", m.role);
+
+    canvas.setAttribute("aria-valuenow", String(Math.round(position)));
+    canvas.setAttribute("aria-valuetext", fmt(position) + ", " + m.who + ": " + m.text);
+
+    draw();
+  }
+
+  function seek(e) {
+    var r = canvas.getBoundingClientRect();
+    setPosition(((e.clientX - r.left) / r.width) * DURATION);
+  }
+
+  var dragging = false;
+
+  canvas.addEventListener("pointerdown", function (e) {
+    dragging = true;
+    canvas.setPointerCapture(e.pointerId);
+    seek(e);
+  });
+  canvas.addEventListener("pointermove", function (e) { if (dragging) { seek(e); } });
+  canvas.addEventListener("pointerup", function (e) {
+    dragging = false;
+    if (canvas.hasPointerCapture(e.pointerId)) { canvas.releasePointerCapture(e.pointerId); }
+  });
+  canvas.addEventListener("pointercancel", function () { dragging = false; });
+  canvas.addEventListener("mousemove", function (e) { if (!dragging) { seek(e); } });
+
+  canvas.addEventListener("keydown", function (e) {
+    var handled = true;
+    switch (e.key) {
+      case "ArrowRight": case "ArrowUp":   setPosition(position + 15); break;
+      case "ArrowLeft":  case "ArrowDown": setPosition(position - 15); break;
+      case "PageUp":                       setPosition(position + 120); break;
+      case "PageDown":                     setPosition(position - 120); break;
+      case "Home":                         setPosition(0); break;
+      case "End":                          setPosition(DURATION); break;
+      default: handled = false;
+    }
+    if (handled) { e.preventDefault(); }
+  });
+
+  if (window.ResizeObserver) {
+    new ResizeObserver(function () { draw(); }).observe(canvas);
+  } else {
+    window.addEventListener("resize", draw);
+  }
+
+  /* ==========================================================
+     Newsletter
+     ========================================================== */
+
+  var form = document.getElementById("signup");
+  var note = document.getElementById("signup-note");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var v = document.getElementById("email").value.trim();
+    var at = v.indexOf("@");
+    if (at < 1 || v.lastIndexOf(".") < at) {
+      note.textContent = "That address is missing something — check for the @ and the domain.";
+      note.style.color = "var(--red-pen)";
+      return;
+    }
+    note.textContent = "This demo page is not connected to a mailing list, so nothing was sent.";
+    note.style.color = "var(--ink-soft)";
+  });
+
+  /* boot */
+  setPosition(0);
+  route(false);
+}());
+</script>
+
+</body>
+</html>
+
