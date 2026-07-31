@@ -6,11 +6,15 @@
   <meta name="color-scheme" content="light" />
 
   <title>Within Earshot — a podcast about the machines that live with us</title>
-  <meta name="description" content="A conversation show about artificial intelligence where it actually lands: the triage desk, the classroom, the kitchen table. We talk to the people holding it, not the people selling it." />
+  <meta name="description" content="A podcast about artificial intelligence at the triage desk, the classroom, the kitchen table. We talk to the people holding it, not the people selling it." />
+
+  <meta name="theme-color" content="#ADAC9C" />
 
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Within Earshot" />
   <meta property="og:title" content="Within Earshot" />
-  <meta property="og:description" content="A conversation show about artificial intelligence where it actually lands." />
+  <meta property="og:description" content="Artificial intelligence at the triage desk, the classroom, the kitchen table. The people holding it, not the people selling it." />
+  <meta name="twitter:card" content="summary" />
 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='3' fill='%23FCFBF6'/%3E%3Cpath d='M9 4v24' stroke='%23DDA49A' stroke-width='1.5'/%3E%3Cpath d='M13 10h13M13 16h13M13 22h9' stroke='%23CCD9E3' stroke-width='1.5' stroke-linecap='round'/%3E%3Ccircle cx='5' cy='8' r='1.6' fill='%23ADAC9C'/%3E%3Ccircle cx='5' cy='16' r='1.6' fill='%23ADAC9C'/%3E%3Ccircle cx='5' cy='24' r='1.6' fill='%23ADAC9C'/%3E%3C/svg%3E" />
 <style>
@@ -137,10 +141,9 @@
   }
 
   /* ---------------- the contents page is one fixed screen ----------------
-     Title group sits at the top, the dividers are pushed to the bottom by
-     margin-top:auto, and type + padding scale off viewport height so the
-     whole page lands inside 100dvh without ever scrolling. The inner views
-     scroll normally; only the home is pinned. */
+     The whole group is centred on the sheet as one block, and type + padding
+     scale off viewport height so the page lands inside 100dvh without ever
+     scrolling. The inner views scroll normally; only the home is pinned. */
 
   body[data-view="contents"] { overflow: hidden; }
 
@@ -148,41 +151,71 @@
     height: 100vh;
     height: 100dvh;
     margin-block: 0;
-    padding-block: clamp(12px, 2.4vh, 42px);
+    padding-block: clamp(10px, 2vh, 38px);
     display: flex;
-    overflow: auto;
+    overflow: hidden;
   }
   body[data-view="contents"] .sheet {
     flex: 1 1 auto;
     min-height: 0;
     display: flex;
     flex-direction: column;
-    padding-block: clamp(18px, 3.2vh, 52px);
+    overflow: hidden;
+    padding-block: clamp(16px, 2.8vh, 48px);
   }
   body[data-view="contents"] .colophon { display: none; }
 
-  body[data-view="contents"] #view-contents {
+  /* The group is centred rather than sprung apart. `margin-top:auto` on the
+     index used to anchor it to the foot of the sheet, which meant every pixel
+     of leftover height collected into a single hole above it — the shorter the
+     copy, the bigger the hole. Centring spends that space as even margin above
+     and below, so the page reads as one compact block on a full sheet. */
+  body[data-view="contents"] #contents {
     flex: 1 1 auto;
     min-height: 0;
-    gap: clamp(9px, 1.9vh, 26px);
+    justify-content: center;
+    gap: clamp(8px, 1.7vh, 24px);
   }
   body[data-view="contents"] .stack-tight { gap: clamp(4px, 1vh, 14px); }
 
+  /* The measure is wider here than in the prose views on purpose. A line that
+     wraps once more costs the same height whether or not it earns it, and on
+     the home page height is the scarce resource — so the headline is given
+     room to break where the sentence breaks, and the standfirst and the entry
+     glosses are given room to sit on as few lines as they honestly need.
+     The eyebrow leaves the 30px ruling baseline for the same reason: nothing
+     on this page is ruled, so there is no rhythm to keep. */
+  body[data-view="contents"] .eyebrow { line-height: 1.6; }
   body[data-view="contents"] .display {
-    font-size: clamp(27px, min(5.6vw, 7.2vh), 50px);
+    font-size: clamp(24px, min(4.6vw, 6vh), 48px);
+    max-width: 24ch;
   }
   body[data-view="contents"] .sub {
     font-size: clamp(15px, min(2.2vw, 2.5vh), 19px);
     line-height: 1.5;
+    max-width: 66ch;
   }
 
-  body[data-view="contents"] .contents { margin-top: auto; }
-  body[data-view="contents"] .entry { padding-block: clamp(8px, 1.7vh, 20px); }
+  body[data-view="contents"] .contents { margin-top: clamp(6px, 1.4vh, 20px); }
+  body[data-view="contents"] .entry { padding-block: clamp(7px, 1.6vh, 20px); }
   body[data-view="contents"] .entry .name { font-size: clamp(17px, min(2.7vw, 3vh), 24px); }
-  body[data-view="contents"] .entry .gloss { font-size: clamp(13px, 1.75vh, 15px); line-height: 1.45; }
-  body[data-view="contents"] .entry .tongue { height: clamp(26px, 4.4vh, 40px); }
+  body[data-view="contents"] .entry .gloss {
+    font-size: clamp(13px, 1.75vh, 15px);
+    line-height: 1.45;
+    max-width: 78ch;
+  }
+  body[data-view="contents"] .entry .tongue { height: clamp(24px, 3.8vh, 38px); }
 
   .home-foot { margin-top: clamp(8px, 1.6vh, 20px); }
+
+  /* Tall viewports have height to spare. Spend it on the page — a larger title
+     and more air around each entry — so the block scales with the sheet instead
+     of sitting on it as a small island in a lot of margin. */
+  @media (min-height: 940px) {
+    body[data-view="contents"] #contents { gap: clamp(16px, 2.6vh, 34px); }
+    body[data-view="contents"] .display { font-size: clamp(40px, 5.2vh, 58px); }
+    body[data-view="contents"] .entry { padding-block: clamp(14px, 2.6vh, 34px); }
+  }
 
   /* short viewports shed the least load-bearing lines first */
   @media (max-height: 720px) {
@@ -191,6 +224,19 @@
   @media (max-height: 580px) {
     body[data-view="contents"] .entry .gloss { display: none; }
     body[data-view="contents"] .home-foot { display: none; }
+  }
+  /* A narrow column wraps every gloss onto three lines, which is more height
+     than the four entries can afford. The names carry the list on their own. */
+  @media (max-width: 560px) {
+    body[data-view="contents"] .entry .gloss { display: none; }
+  }
+  /* Below this the page cannot be one honest screen at any type size, so it
+     gives up the pin rather than clip the contents out of reach. */
+  @media (max-height: 460px) {
+    body[data-view="contents"],
+    body[data-view="contents"] .book,
+    body[data-view="contents"] .sheet { overflow: auto; }
+    body[data-view="contents"] .book { height: auto; min-height: 100dvh; }
   }
 
   /* ---------------- ruled prose ---------------- */
@@ -464,6 +510,23 @@
     font-variant-numeric: tabular-nums;
     line-height: 1.7;
   }
+  /* The timecodes are buttons — the show notes and the scrubber are the same
+     tape, so a chapter mark should be able to move it. Styled to sit exactly
+     where the plain timecode sat; only the underline on hover gives it away. */
+  button.at {
+    appearance: none;
+    -webkit-appearance: none;
+    background: none;
+    border: 0;
+    border-bottom: 1px solid transparent;
+    padding: 0;
+    justify-self: start;
+    text-align: left;
+    cursor: pointer;
+    transition: color .16s ease, border-color .16s ease;
+  }
+  button.at:hover { color: var(--pen); border-bottom-color: var(--pen); }
+  .notes li:last-child { border-bottom: 0; }
   .notes span:last-child { line-height: 1.55; }
 
   /* ---------------- people ---------------- */
@@ -557,37 +620,83 @@
       animation-duration: .001ms !important;
     }
   }
+
+  /* ---------------- print ----------------
+     Paper asked to become paper. Routing is a screen idea, so print ignores
+     it and lays the whole notebook out end to end, one section per sheet. */
+
+  @media print {
+    body { background: #fff; }
+    .book { max-width: none; margin: 0; padding: 0; }
+    .sheet {
+      border: 0;
+      box-shadow: none;
+      padding: 0;
+      min-height: 0;
+      overflow: visible;
+    }
+    body[data-view="contents"],
+    body[data-view="contents"] .book,
+    body[data-view="contents"] .sheet { height: auto; overflow: visible; }
+    body[data-view="contents"] .colophon { display: block; }
+
+    .view[hidden] { display: flex !important; }
+    .view + .view { break-before: page; }
+    .entry, .person, .notes li { break-inside: avoid; }
+
+    .holes, .sheet::before, .entry .tongue,
+    .card, .signup, .platforms, .back, .if-script { display: none !important; }
+    .ruled { background-image: none; }
+  }
 </style>
+
+<noscript>
+  <style>
+    /* No script means no routing, so the notebook stops pretending to be a
+       stack of pages and becomes one continuous read. The contents links
+       still work — they are real fragments pointing at real sections. */
+    .view[hidden] { display: flex !important; }
+    .view + .view {
+      margin-top: calc(var(--u) * 2);
+      padding-top: calc(var(--u) * 2);
+      border-top: 1px solid var(--hairline);
+    }
+    /* The scrubber is script all the way down; without it the card is
+       furniture, the chapter marks are text again, and nothing should
+       advertise an interaction that isn't there. */
+    .card { display: none !important; }
+    .if-script { display: none; }
+    button.at { cursor: default; }
+    button.at:hover { color: var(--ink-faint); border-bottom-color: transparent; }
+  </style>
+</noscript>
 
 </head>
 <body>
-<div class="book">
+<main class="book">
   <div class="sheet">
     <span class="holes" aria-hidden="true"><i></i><i></i><i></i></span>
 
     <!-- ============ DASHBOARD / CONTENTS ============ -->
-    <section class="view" id="view-contents" tabindex="-1" aria-label="Contents">
+    <section class="view" id="contents" tabindex="-1" aria-label="Contents">
       <div class="stack-tight">
         <p class="eyebrow">Within Earshot &nbsp;·&nbsp; notebook one &nbsp;·&nbsp; 2026</p>
         <h1 class="display">The machines moved in. <em>Nobody knocked.</em></h1>
       </div>
 
       <p class="sub">
-        A conversation show about artificial intelligence where it actually lands — the triage
-        desk, the classroom, the kitchen table. We talk to the people holding it, not the people
-        selling it.
+        Artificial intelligence where it actually lands — the triage desk, the classroom, the
+        kitchen table. We talk to the people holding it, not the people selling it.
       </p>
 
-      <p class="annot">One episode out so far. Everything below is what there is.</p>
+      <p class="annot">One episode so far. This is all of it.</p>
 
       <nav class="contents" aria-label="Sections">
         <a class="entry" href="#episode" data-tab="a">
           <span class="pg">p. 01</span>
           <span class="name">The Episode</span>
           <span></span>
-          <span class="gloss">
-            Ep. 01 — The Nurse and the Night Shift. 48 min, with a scrubbable transcript.
-          </span>
+          <span class="gloss">Ep. 01 — The Nurse and the Night Shift. 48 min.</span>
           <span class="tongue" aria-hidden="true"></span>
         </a>
 
@@ -595,7 +704,7 @@
           <span class="pg">p. 09</span>
           <span class="name">Who's Talking</span>
           <span></span>
-          <span class="gloss">The two hosts and the producer, and where each of them came from.</span>
+          <span class="gloss">Two hosts, one producer, and where each came from.</span>
           <span class="tongue" aria-hidden="true"></span>
         </a>
 
@@ -603,7 +712,7 @@
           <span class="pg">p. 14</span>
           <span class="name">Listen &amp; Subscribe</span>
           <span></span>
-          <span class="gloss">Podcast apps, the RSS feed, and the letter that follows each episode.</span>
+          <span class="gloss">Podcast apps, the feed, and the letter after each episode.</span>
           <span class="tongue" aria-hidden="true"></span>
         </a>
 
@@ -611,19 +720,18 @@
           <span class="pg">p. 18</span>
           <span class="name">About the Show</span>
           <span></span>
-          <span class="gloss">Why it exists, how it's made, and the rule we hold each interview to.</span>
+          <span class="gloss">Why it exists, and the rule every interview is held to.</span>
           <span class="tongue" aria-hidden="true"></span>
         </a>
       </nav>
 
       <p class="fineprint home-foot">
-        Independent show, recorded in Providence &middot; Demonstration site — the people and the
-        episode here are invented
+        Recorded in Providence &middot; Demonstration site — everyone here is invented
       </p>
     </section>
 
     <!-- ============ EPISODE ============ -->
-    <section class="view" id="view-episode" tabindex="-1" hidden aria-label="The Episode">
+    <section class="view" id="episode" tabindex="-1" hidden aria-label="The Episode">
       <a class="back" href="#contents">&larr; Contents</a>
 
       <div class="stack-tight">
@@ -668,13 +776,13 @@
       </div>
 
       <div class="stack-tight">
-        <p class="eyebrow">In this episode</p>
-        <ul class="notes">
-          <li><span class="at">02:41</span><span>What a bad night looks like from inside the software</span></li>
-          <li><span class="at">07:05</span><span>The score arrives before the patient does</span></li>
-          <li><span class="at">19:48</span><span>The man who came through as a two</span></li>
-          <li><span class="at">31:37</span><span>Fear lives in the body, and the model reads bodies</span></li>
-          <li><span class="at">41:19</span><span>The colleague who is never tired</span></li>
+        <p class="eyebrow">In this episode<span class="if-script">&nbsp;&middot;&nbsp; a time moves the tape</span></p>
+        <ul class="notes" id="notes">
+          <li><button type="button" class="at" data-t="161">02:41</button><span>What a bad night looks like from inside the software</span></li>
+          <li><button type="button" class="at" data-t="425">07:05</button><span>The score arrives before the patient does</span></li>
+          <li><button type="button" class="at" data-t="1188">19:48</button><span>The man who came through as a two</span></li>
+          <li><button type="button" class="at" data-t="1897">31:37</button><span>Fear lives in the body, and the model reads bodies</span></li>
+          <li><button type="button" class="at" data-t="2479">41:19</button><span>The colleague who is never tired</span></li>
         </ul>
       </div>
 
@@ -685,7 +793,7 @@
     </section>
 
     <!-- ============ HOSTS ============ -->
-    <section class="view" id="view-hosts" tabindex="-1" hidden aria-label="Who's Talking">
+    <section class="view" id="hosts" tabindex="-1" hidden aria-label="Who's Talking">
       <a class="back" href="#contents">&larr; Contents</a>
 
       <h2 class="head">Two people who came at this from opposite ends</h2>
@@ -721,7 +829,7 @@
     </section>
 
     <!-- ============ LISTEN ============ -->
-    <section class="view" id="view-listen" tabindex="-1" hidden aria-label="Listen and Subscribe">
+    <section class="view" id="listen" tabindex="-1" hidden aria-label="Listen and Subscribe">
       <a class="back" href="#contents">&larr; Contents</a>
 
       <h2 class="head">Wherever you already are</h2>
@@ -752,7 +860,7 @@
     </section>
 
     <!-- ============ ABOUT ============ -->
-    <section class="view" id="view-about" tabindex="-1" hidden aria-label="About the Show">
+    <section class="view" id="about" tabindex="-1" hidden aria-label="About the Show">
       <a class="back" href="#contents">&larr; Contents</a>
 
       <h2 class="head">About the show</h2>
@@ -785,7 +893,7 @@
     </section>
 
   </div>
-</div>
+</main>
 
 <footer class="colophon">
   <p>
@@ -804,24 +912,38 @@
      ========================================================== */
 
   var NAMES = ["contents", "episode", "hosts", "listen", "about"];
-  var views = {};
-  NAMES.forEach(function (n) { views[n] = document.getElementById("view-" + n); });
 
-  var current = "contents";
+  /* The section ids are the fragments themselves, so with script disabled
+     the same links still land on the same sections — see the <noscript>
+     block, which simply stops hiding them. */
+  var views = {};
+  NAMES.forEach(function (n) { views[n] = document.getElementById(n); });
+
+  /* A hash route that never retitles the document leaves every history entry
+     and every open tab reading the same thing. */
+  var TITLES = {
+    contents: "Within Earshot — a podcast about the machines that live with us",
+    episode:  "Ep. 01, The Nurse and the Night Shift — Within Earshot",
+    hosts:    "Who's Talking — Within Earshot",
+    listen:   "Listen & Subscribe — Within Earshot",
+    about:    "About the Show — Within Earshot"
+  };
+
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function route(fromUser) {
     var want = (location.hash || "").replace("#", "");
     if (NAMES.indexOf(want) === -1) { want = "contents"; }
 
     NAMES.forEach(function (n) { views[n].hidden = (n !== want); });
-    current = want;
     document.body.setAttribute("data-view", want);
+    document.title = TITLES[want];
 
     if (fromUser) {
       window.scrollTo({ top: 0, behavior: "auto" });
       views[want].focus({ preventScroll: true });
     }
-    if (want === "episode") { requestAnimationFrame(draw); }
+    if (want === "episode") { render(); }
   }
 
   window.addEventListener("hashchange", function () { route(true); });
@@ -831,7 +953,8 @@
      No audio is faked: the interaction reveals real transcript.
      ========================================================== */
 
-  var DURATION = 2892; // 48:12
+  var DURATION = 2892;        // the one number: 48:12
+  var TOTAL = fmt(DURATION);  // every display string is derived, so none can drift
 
   var markers = [
     { t: 0,    who: "Mara",   role: "host",  text: "Hollis, before we started recording you said you can tell when the software is having a bad night." },
@@ -881,8 +1004,29 @@
     return out;
   }
 
-  function token(name) {
-    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  /* The palette is fixed for the life of the page — there is no dark variant
+     and no theme toggle — so it is read once. Reading it inside draw() meant
+     three forced style recalcs per pointer sample. */
+  var palette = null;
+  function tokens() {
+    if (!palette) {
+      var cs = getComputedStyle(document.documentElement);
+      palette = {
+        pen:   cs.getPropertyValue("--pen").trim(),
+        faint: cs.getPropertyValue("--ink-faint").trim(),
+        red:   cs.getPropertyValue("--red-pen").trim(),
+        rule:  cs.getPropertyValue("--margin-rule").trim()
+      };
+    }
+    return palette;
+  }
+
+  /* Dragging fires far faster than the display refreshes; coalesce to one
+     paint per frame so a fast scrub does not queue up work it cannot show. */
+  var frame = 0;
+  function render() {
+    if (frame) { return; }
+    frame = requestAnimationFrame(function () { frame = 0; draw(); });
   }
 
   function draw() {
@@ -899,21 +1043,32 @@
     var count = Math.max(24, Math.floor(w / (BAR + GAP)));
     if (amps.length !== count) { amps = buildAmps(count); }
 
-    var pen = token("--pen");
-    var faint = token("--ink-faint");
+    var c = tokens();
     var mid = h / 2;
     var ratio = position / DURATION;
+    var TICK = 7;                       // room reserved under the bars for the marks
+    var body = h - TICK;
 
     for (var i = 0; i < count; i++) {
-      var bh = Math.max(2, amps[i] * (h - 6));
+      var bh = Math.max(2, amps[i] * (body - 6));
       var passed = (i / count) <= ratio;
-      ctx.fillStyle = passed ? pen : faint;
+      ctx.fillStyle = passed ? c.pen : c.faint;
       ctx.globalAlpha = passed ? 1 : 0.32;
-      ctx.fillRect(i * (BAR + GAP), mid - bh / 2, BAR, bh);
+      ctx.fillRect(i * (BAR + GAP), mid - TICK / 2 - bh / 2, BAR, bh);
+    }
+
+    /* Chapter marks. Without them a drag is a blind hunt for the next line;
+       with them the waveform tells you where the tape has something to say. */
+    var here = markerAt(position);
+    for (var k = 0; k < markers.length; k++) {
+      var on = markers[k] === here;
+      ctx.globalAlpha = on ? 1 : 0.55;
+      ctx.fillStyle = on ? c.red : c.rule;
+      ctx.fillRect(Math.min(w - 1, (markers[k].t / DURATION) * w), h - TICK, 1, TICK);
     }
 
     ctx.globalAlpha = 1;
-    ctx.fillStyle = token("--red-pen");
+    ctx.fillStyle = c.red;
     ctx.fillRect(Math.min(w - 2, Math.max(0, ratio * w)), 0, 2, h);
   }
 
@@ -931,20 +1086,32 @@
     return found;
   }
 
+  var shown = null;
+
   function setPosition(t) {
     position = Math.max(0, Math.min(DURATION, t));
     var m = markerAt(position);
 
-    clock.textContent = fmt(position) + " / 48:12";
-    roTime.textContent = fmt(m.t);
-    roWho.textContent = m.who;
-    roText.textContent = m.text;
-    readout.setAttribute("data-speaker", m.role);
+    clock.textContent = fmt(position) + " / " + TOTAL;
 
+    /* The slider says where you are; the live region below says what is being
+       said there. Putting the whole transcript line in aria-valuetext too made
+       every 15-second nudge read the paragraph out twice. */
     canvas.setAttribute("aria-valuenow", String(Math.round(position)));
-    canvas.setAttribute("aria-valuetext", fmt(position) + ", " + m.who + ": " + m.text);
+    canvas.setAttribute("aria-valuetext", fmt(position) + " of " + TOTAL + ", " + m.who + " speaking");
 
-    draw();
+    /* .readout is aria-live. Rewriting it on every pointer sample announced the
+       same line sixty times a second, so it is only touched when the tape
+       actually reaches a different one. */
+    if (m !== shown) {
+      shown = m;
+      roTime.textContent = fmt(m.t);
+      roWho.textContent = m.who;
+      roText.textContent = m.text;
+      readout.setAttribute("data-speaker", m.role);
+    }
+
+    render();
   }
 
   function seek(e) {
@@ -982,10 +1149,20 @@
   });
 
   if (window.ResizeObserver) {
-    new ResizeObserver(function () { draw(); }).observe(canvas);
+    new ResizeObserver(render).observe(canvas);
   } else {
-    window.addEventListener("resize", draw);
+    window.addEventListener("resize", render);
   }
+
+  /* The show notes and the scrubber are the same tape. A chapter mark that
+     cannot move it is just a number printed next to a sentence. */
+  document.getElementById("notes").addEventListener("click", function (e) {
+    var hit = e.target.closest("button[data-t]");
+    if (!hit) { return; }
+    setPosition(Number(hit.getAttribute("data-t")));
+    canvas.focus({ preventScroll: true });
+    canvas.scrollIntoView({ block: "nearest", behavior: reduced ? "auto" : "smooth" });
+  });
 
   /* ==========================================================
      Newsletter
@@ -1008,6 +1185,7 @@
   });
 
   /* boot */
+  canvas.setAttribute("aria-valuemax", String(DURATION));
   setPosition(0);
   route(false);
 }());

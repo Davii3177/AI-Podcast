@@ -1,0 +1,23 @@
+# Render blueprint — https://render.com/docs/blueprint-spec
+#
+# The site is one self-contained file with no dependencies and no network
+# requests, so there is nothing to build: Render serves the repo root as-is.
+# Pushing to main redeploys.
+
+services:
+  - type: web
+    name: within-earshot
+    runtime: static
+    staticPublishPath: .
+    autoDeploy: true
+
+    headers:
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /*
+        name: X-Frame-Options
+        value: SAMEORIGIN
