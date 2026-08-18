@@ -145,22 +145,18 @@
      scale off viewport height so the page lands inside 100dvh without ever
      scrolling. The inner views scroll normally; only the home is pinned. */
 
-  body[data-view="contents"] { overflow: hidden; }
+  body[data-view="contents"] { overflow-x: hidden; }
 
   body[data-view="contents"] .book {
-    height: 100vh;
-    height: 100dvh;
     margin-block: 0;
     padding-block: clamp(10px, 2vh, 38px);
     display: flex;
-    overflow: hidden;
   }
   body[data-view="contents"] .sheet {
     flex: 1 1 auto;
     min-height: 0;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
     padding-block: clamp(16px, 2.8vh, 48px);
   }
   body[data-view="contents"] .colophon { display: none; }
@@ -222,13 +218,13 @@
     body[data-view="contents"] .annot { display: none; }
   }
   @media (max-height: 580px) {
-    body[data-view="contents"] .entry .gloss { display: none; }
+    body[data-view="contents"] .entry .gloss { display: block; }
     body[data-view="contents"] .home-foot { display: none; }
   }
   /* A narrow column wraps every gloss onto three lines, which is more height
      than the four entries can afford. The names carry the list on their own. */
   @media (max-width: 560px) {
-    body[data-view="contents"] .entry .gloss { display: none; }
+    body[data-view="contents"] .entry .gloss { display: block; }
   }
   /* Below this the page cannot be one honest screen at any type size, so it
      gives up the pin rather than clip the contents out of reach. */
@@ -322,6 +318,9 @@
   .contents {
     display: flex;
     flex-direction: column;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: thin;
     border-top: 1px solid var(--hairline);
     margin-right: clamp(0px, 3vw, 34px);
   }
@@ -329,7 +328,8 @@
   .entry {
     position: relative;
     display: grid;
-    grid-template-columns: 56px minmax(0, 1fr);
+    grid-template-columns: 56px minmax(220px, 1fr);
+    min-width: min(100%, 680px);
     gap: 2px 20px;
     align-items: baseline;
     padding: 20px 4px;
@@ -372,7 +372,7 @@
 
   @media (max-width: 720px) {
     .entry .tongue { display: none; }
-    .entry { grid-template-columns: 44px minmax(0, 1fr); }
+    .entry { grid-template-columns: 44px minmax(260px, 1fr); }
   }
 
   /* ---------------- back to contents ---------------- */
