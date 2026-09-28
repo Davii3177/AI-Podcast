@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -8,7 +8,7 @@
   <title>Within Earshot — a podcast about the machines that live with us</title>
   <meta name="description" content="A podcast about artificial intelligence at the triage desk, the classroom, the kitchen table. We talk to the people holding it, not the people selling it." />
 
-  <meta name="theme-color" content="#ADAC9C" />
+  <meta name="theme-color" content="#F3F0E8" />
 
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Within Earshot" />
@@ -16,890 +16,867 @@
   <meta property="og:description" content="Artificial intelligence at the triage desk, the classroom, the kitchen table. The people holding it, not the people selling it." />
   <meta name="twitter:card" content="summary" />
 
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='3' fill='%23FCFBF6'/%3E%3Cpath d='M9 4v24' stroke='%23DDA49A' stroke-width='1.5'/%3E%3Cpath d='M13 10h13M13 16h13M13 22h9' stroke='%23CCD9E3' stroke-width='1.5' stroke-linecap='round'/%3E%3Ccircle cx='5' cy='8' r='1.6' fill='%23ADAC9C'/%3E%3Ccircle cx='5' cy='16' r='1.6' fill='%23ADAC9C'/%3E%3Ccircle cx='5' cy='24' r='1.6' fill='%23ADAC9C'/%3E%3C/svg%3E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230B0B0B'/%3E%3Cpath d='M8 9h11M8 16h16M8 23h8' stroke='%23F3F0E8' stroke-width='2.4'/%3E%3Crect x='20' y='20' width='5' height='5' fill='%23D62718'/%3E%3C/svg%3E" />
+
+  <!-- The one outside request: a display serif for headings. Everything
+       degrades to a system serif if it never arrives. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" />
 <style>
   /* ============================================================
      WITHIN EARSHOT
-     A single committed visual world: a ruled notebook on a desk.
-     Deliberately light-only — no dark variant. The tokens are
-     defined once and never redefined, so the viewer's theme
-     toggle leaves the paper as paper.
+     Editorial, high-contrast, square. Black ink on newsprint, one
+     signal red. Square corners, 1px rules, no shadows. Headlines in
+     a display serif, body in a text serif, labels in monospace.
+     Light-only: the tokens are defined once on :root.
      ============================================================ */
 
   :root {
     color-scheme: light;
 
-    --font-voice: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
-    --font-mark: "Cascadia Mono", "Cascadia Code", Consolas, ui-monospace, "SF Mono", Menlo, monospace;
+    --font-display: "Instrument Serif", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    --font-text: Charter, "Bitstream Charter", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
 
-    --desk:        #ADAC9C;
-    --desk-deep:   #9E9D8D;
-    --sheet:       #FCFBF6;
-    --sheet-sunk:  #F4F2E9;
-    --rule-line:   #CCD9E3;
-    --margin-rule: #DDA49A;
+    --paper:   #F3F0E8;
+    --paper-2: #E9E5DA;
+    --ink:     #0B0B0B;
+    --ink-2:   #3A3A38;
+    --grey:    #6E6C66;
+    --rule-soft: #C8C3B6;
+    --red:     #D62718;
 
-    --ink:        #17232C;
-    --ink-soft:   #4C5D68;
-    --ink-faint:  #8B99A2;
-    --pen:        #1D5372;
-    --red-pen:    #A03A2E;
-    --hairline:   #DFDDD1;
-
-    --tab-a: #C7D8E5;
-    --tab-b: #E9C7C1;
-    --tab-c: #E7DCA6;
-    --tab-d: #C8DAC3;
-
-    --u: 30px;              /* baseline unit for every ruled block */
-    --gutter: 92px;
-    --pad-x: clamp(22px, 4vw, 56px);
+    --wrap: 1280px;
+    --gutter: clamp(16px, 4vw, 40px);
   }
 
-  *, *::before, *::after { box-sizing: border-box; }
+  *, *::before, *::after { box-sizing: border-box; border-radius: 0; }
+
+  html { scroll-padding-top: 72px; }
 
   body {
     margin: 0;
-    background: var(--desk);
-    background-image: radial-gradient(120% 80% at 50% -10%, rgba(255,255,255,.20), transparent 60%);
-    background-attachment: fixed;
+    background: var(--paper);
     color: var(--ink);
-    font-family: var(--font-voice);
+    font-family: var(--font-text);
     font-size: 17px;
-    line-height: var(--u);
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    /* short pages still put the black footer at the foot of the window */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
   }
+  body > main { flex: 1 0 auto; width: 100%; }
 
-  ::selection { background: var(--tab-c); color: var(--ink); }
+  ::selection { background: var(--red); color: var(--paper); }
 
-  a:focus-visible,
-  button:focus-visible,
-  input:focus-visible,
-  [role="slider"]:focus-visible,
-  [tabindex]:focus-visible {
-    outline: 2px solid var(--pen);
-    outline-offset: 3px;
+  a { color: inherit; }
+
+  :focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+
+  .wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: var(--gutter); }
+
+  .label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin: 0;
   }
+  .label.red { color: var(--red); }
 
-  /* ---------------- the sheet ---------------- */
+  /* ---------------- masthead ---------------- */
 
-  .book {
-    max-width: 1000px;
-    margin: clamp(20px, 4vw, 56px) auto clamp(40px, 7vw, 88px);
-    /* extra room on the end side so the divider tongues are never clipped */
-    padding-inline: clamp(12px, 3vw, 28px) 48px;
-  }
-
-  .sheet {
-    position: relative;
-    background: var(--sheet);
-    border: 1px solid var(--hairline);
-    box-shadow:
-      0 1px 0 rgba(255,255,255,.6) inset,
-      0 18px 34px -18px rgba(30,34,28,.45),
-      0 2px 6px rgba(30,34,28,.10);
-    padding: clamp(34px, 5vw, 60px) var(--pad-x) clamp(44px, 6vw, 72px) var(--gutter);
-    min-height: 70vh;
-  }
-
-  /* pink margin rule */
-  .sheet::before {
-    content: "";
-    position: absolute;
-    left: calc(var(--gutter) - 26px);
+  .masthead {
+    position: sticky;
     top: 0;
-    bottom: 0;
-    width: 1px;
-    background: var(--margin-rule);
-    opacity: .8;
+    z-index: 10;
+    background: var(--paper);
+    border-bottom: 1px solid var(--ink);
   }
-
-  .holes {
-    position: absolute;
-    left: 26px;
-    top: 9%;
-    bottom: 9%;
-    width: 15px;
+  .masthead-in {
     display: flex;
-    flex-direction: column;
+    align-items: stretch;
     justify-content: space-between;
-    pointer-events: none;
+    min-height: 56px;
   }
-  .holes i {
-    display: block;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background: var(--desk-deep);
-    box-shadow: inset 0 1px 2px rgba(0,0,0,.35);
-  }
-
-  @media (max-width: 720px) {
-    :root { --gutter: clamp(22px, 4vw, 56px); }
-    .sheet::before, .holes { display: none; }
-    .book { padding-inline: clamp(12px, 3vw, 28px); }
-  }
-
-  /* ---------------- the contents page is one fixed screen ----------------
-     The whole group is centred on the sheet as one block, and type + padding
-     scale off viewport height so the page lands inside 100dvh without ever
-     scrolling. The inner views scroll normally; only the home is pinned. */
-
-  body[data-view="contents"] { overflow-x: hidden; }
-
-  body[data-view="contents"] .book {
-    margin-block: 0;
-    padding-block: clamp(10px, 2vh, 38px);
+  .brand {
     display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
   }
-  body[data-view="contents"] .sheet {
-    flex: 1 1 auto;
-    min-height: 0;
+  .brand i { width: 10px; height: 10px; background: var(--red); flex: none; }
+
+  .nav { display: flex; align-items: stretch; }
+  .nav a {
     display: flex;
-    flex-direction: column;
-    padding-block: clamp(16px, 2.8vh, 48px);
+    align-items: center;
+    padding-inline: 18px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-left: 1px solid var(--ink);
+    transition: background .12s, color .12s;
   }
-  body[data-view="contents"] .colophon { display: none; }
+  .nav a:hover { background: var(--ink); color: var(--paper); }
+  .nav a[aria-current="page"] { background: var(--ink); color: var(--paper); }
+  .nav a.sub-link { background: var(--red); color: var(--paper); border-left-color: var(--red); }
+  .nav a.sub-link:hover, .nav a.sub-link[aria-current="page"] { background: var(--ink); border-left-color: var(--ink); }
 
-  /* The group is centred rather than sprung apart. `margin-top:auto` on the
-     index used to anchor it to the foot of the sheet, which meant every pixel
-     of leftover height collected into a single hole above it — the shorter the
-     copy, the bigger the hole. Centring spends that space as even margin above
-     and below, so the page reads as one compact block on a full sheet. */
-  body[data-view="contents"] #contents {
-    flex: 1 1 auto;
-    min-height: 0;
-    justify-content: center;
-    gap: clamp(8px, 1.7vh, 24px);
-  }
-  body[data-view="contents"] .stack-tight { gap: clamp(4px, 1vh, 14px); }
-
-  /* The measure is wider here than in the prose views on purpose. A line that
-     wraps once more costs the same height whether or not it earns it, and on
-     the home page height is the scarce resource — so the headline is given
-     room to break where the sentence breaks, and the standfirst and the entry
-     glosses are given room to sit on as few lines as they honestly need.
-     The eyebrow leaves the 30px ruling baseline for the same reason: nothing
-     on this page is ruled, so there is no rhythm to keep. */
-  body[data-view="contents"] .eyebrow { line-height: 1.6; }
-  body[data-view="contents"] .display {
-    font-size: clamp(24px, min(4.6vw, 6vh), 48px);
-    max-width: 24ch;
-  }
-  body[data-view="contents"] .sub {
-    font-size: clamp(15px, min(2.2vw, 2.5vh), 19px);
-    line-height: 1.5;
-    max-width: 66ch;
+  @media (max-width: 620px) {
+    .brand-name { display: none; }
+    .nav a { padding-inline: 11px; font-size: 11.5px; letter-spacing: .04em; }
   }
 
-  body[data-view="contents"] .contents { margin-top: clamp(6px, 1.4vh, 20px); }
-  body[data-view="contents"] .entry { padding-block: clamp(7px, 1.6vh, 20px); }
-  body[data-view="contents"] .entry .name { font-size: clamp(17px, min(2.7vw, 3vh), 24px); }
-  body[data-view="contents"] .entry .gloss {
-    font-size: clamp(13px, 1.75vh, 15px);
-    line-height: 1.45;
-    max-width: 78ch;
-  }
-  body[data-view="contents"] .entry .tongue { height: clamp(24px, 3.8vh, 38px); }
+  /* ---------------- views ---------------- */
 
-  .home-foot { margin-top: clamp(8px, 1.6vh, 20px); }
-
-  /* Tall viewports have height to spare. Spend it on the page — a larger title
-     and more air around each entry — so the block scales with the sheet instead
-     of sitting on it as a small island in a lot of margin. */
-  @media (min-height: 940px) {
-    body[data-view="contents"] #contents { gap: clamp(16px, 2.6vh, 34px); }
-    body[data-view="contents"] .display { font-size: clamp(40px, 5.2vh, 58px); }
-    body[data-view="contents"] .entry { padding-block: clamp(14px, 2.6vh, 34px); }
-  }
-
-  /* short viewports shed the least load-bearing lines first */
-  @media (max-height: 720px) {
-    body[data-view="contents"] .annot { display: none; }
-  }
-  @media (max-height: 580px) {
-    body[data-view="contents"] .entry .gloss { display: block; }
-    body[data-view="contents"] .home-foot { display: none; }
-  }
-  /* A narrow column wraps every gloss onto three lines, which is more height
-     than the four entries can afford. The names carry the list on their own. */
-  @media (max-width: 560px) {
-    body[data-view="contents"] .entry .gloss { display: block; }
-  }
-  /* Below this the page cannot be one honest screen at any type size, so it
-     gives up the pin rather than clip the contents out of reach. */
-  @media (max-height: 460px) {
-    body[data-view="contents"],
-    body[data-view="contents"] .book,
-    body[data-view="contents"] .sheet { overflow: auto; }
-    body[data-view="contents"] .book { height: auto; min-height: 100dvh; }
-  }
-
-  /* ---------------- ruled prose ---------------- */
-  /* Ruling is drawn on the block itself, so every ruled block
-     self-aligns to its own first baseline — no cumulative drift. */
-
-  .ruled {
-    line-height: var(--u);
-    background-image: repeating-linear-gradient(
-      to bottom,
-      transparent 0,
-      transparent calc(var(--u) - 1px),
-      var(--rule-line) calc(var(--u) - 1px),
-      var(--rule-line) var(--u)
-    );
-    background-position: 0 6px;
-    background-repeat: repeat;
-  }
+  .view { padding-block: clamp(32px, 6vw, 80px) clamp(64px, 9vw, 120px); }
+  .view[hidden] { display: none; }
+  .view:focus { outline: none; }
 
   /* ---------------- type ---------------- */
 
-  .eyebrow {
-    font-family: var(--font-mark);
-    font-size: 11.5px;
-    letter-spacing: .16em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-    line-height: var(--u);
-    margin: 0;
-  }
-
   .display {
-    font-size: clamp(33px, 5.6vw, 52px);
-    line-height: 1.06;
-    letter-spacing: -.022em;
+    font-family: var(--font-display);
     font-weight: 400;
+    font-size: clamp(60px, 12.5vw, 184px);
+    line-height: .86;
+    letter-spacing: -.035em;
     margin: 0;
-    max-width: 17ch;
-    text-wrap: balance;
   }
-  .display em { font-style: italic; color: var(--red-pen); }
+  .display em { font-style: italic; color: var(--red); }
 
   .head {
-    font-size: clamp(25px, 3.6vw, 34px);
-    line-height: 1.14;
-    letter-spacing: -.016em;
+    font-family: var(--font-display);
     font-weight: 400;
+    font-size: clamp(48px, 8vw, 112px);
+    line-height: .9;
+    letter-spacing: -.03em;
     margin: 0;
-    max-width: 22ch;
     text-wrap: balance;
   }
+  .head em { font-style: italic; }
 
-  .sub {
-    font-size: 19px;
-    line-height: var(--u);
-    color: var(--ink-soft);
-    max-width: 44ch;
+  .standfirst {
+    font-size: clamp(19px, 2.1vw, 24px);
+    line-height: 1.45;
     margin: 0;
+    max-width: 34ch;
     text-wrap: pretty;
   }
 
-  .prose { max-width: 62ch; margin: 0; text-wrap: pretty; }
-  .prose + .prose { margin-top: var(--u); }
+  .prose { max-width: 62ch; margin: 0; text-wrap: pretty; color: var(--ink-2); }
+  .prose + .prose { margin-top: 1.1em; }
 
-  .stack { display: flex; flex-direction: column; gap: var(--u); }
-  .stack-tight { display: flex; flex-direction: column; gap: 15px; }
-
-  /* ---------------- margin annotation ---------------- */
-
-  .annot {
-    font-family: var(--font-mark);
-    font-size: 12px;
-    line-height: 1.55;
-    color: var(--red-pen);
-    max-width: 30ch;
-    margin: 0;
-    padding-left: 14px;
-    border-left: 2px solid var(--margin-rule);
-  }
-
-  /* ---------------- contents / dashboard ---------------- */
-
-  .contents {
-    display: flex;
-    flex-direction: column;
-    overflow-x: auto;
-    overscroll-behavior-inline: contain;
-    scrollbar-width: thin;
-    border-top: 1px solid var(--hairline);
-    margin-right: clamp(0px, 3vw, 34px);
-  }
-
-  .entry {
-    position: relative;
-    display: grid;
-    grid-template-columns: 56px minmax(220px, 1fr);
-    min-width: min(100%, 680px);
-    gap: 2px 20px;
-    align-items: baseline;
-    padding: 20px 4px;
-    border-bottom: 1px solid var(--hairline);
-    text-decoration: none;
-    color: inherit;
-    transition: background .16s ease, transform .16s ease;
-  }
-  .entry:hover { background: var(--sheet-sunk); transform: translateX(4px); }
-
-  .entry .pg {
-    font-family: var(--font-mark);
-    font-size: 12px;
-    letter-spacing: .06em;
-    color: var(--ink-faint);
-    font-variant-numeric: tabular-nums;
-  }
-  .entry .name { font-size: 24px; line-height: 1.2; }
-  .entry .gloss { font-size: 15px; line-height: 1.5; color: var(--ink-soft); max-width: 46ch; }
-
-  /* the divider tongue that sticks out of the page edge */
-  .entry .tongue {
-    position: absolute;
-    right: -30px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 30px;
-    height: 40px;
-    border-radius: 0 4px 4px 0;
-    border: 1px solid var(--hairline);
-    border-left: 0;
-    box-shadow: 2px 2px 5px -3px rgba(30,34,28,.5);
-    transition: width .16s ease;
-  }
-  .entry:hover .tongue { width: 38px; }
-  .entry[data-tab="a"] .tongue { background: var(--tab-a); }
-  .entry[data-tab="b"] .tongue { background: var(--tab-b); }
-  .entry[data-tab="c"] .tongue { background: var(--tab-c); }
-  .entry[data-tab="d"] .tongue { background: var(--tab-d); }
-
-  @media (max-width: 720px) {
-    .entry .tongue { display: none; }
-    .entry { grid-template-columns: 44px minmax(260px, 1fr); }
-  }
-
-  /* ---------------- back to contents ---------------- */
-
-  .back {
+  .go {
     display: inline-flex;
     align-items: center;
-    gap: 9px;
-    font-family: var(--font-mark);
-    font-size: 11.5px;
-    letter-spacing: .14em;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: .06em;
     text-transform: uppercase;
-    color: var(--ink-soft);
     text-decoration: none;
-    padding: 6px 0;
-    border-bottom: 1px solid var(--hairline);
-    align-self: flex-start;
-    transition: color .16s ease, border-color .16s ease;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 3px;
   }
-  .back:hover { color: var(--ink); border-bottom-color: var(--pen); }
+  .go:hover { color: var(--red); }
 
-  /* ---------------- episode ---------------- */
+  .fineprint { font-size: 14px; color: var(--grey); margin: 0; line-height: 1.55; }
 
-  .facts {
+  /* ---------------- home: hero ---------------- */
+
+  .hero {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 24px;
+    row-gap: 40px;
+    align-items: end;
+  }
+  .hero .display { grid-column: 1 / 11; }
+  .hero-aside {
+    grid-column: 11 / 13;
+    align-self: start;
+    border-top: 1px solid var(--ink);
+  }
+  .hero-aside dl { margin: 0; }
+  .hero-aside div { padding-block: 10px; border-bottom: 1px solid var(--rule-soft); }
+  .hero-aside dt { font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--grey); }
+  .hero-aside dd { margin: 2px 0 0; font-size: 15px; line-height: 1.35; }
+
+  .hero .standfirst { grid-column: 5 / 11; }
+  .hero .hero-go { grid-column: 5 / 11; margin-top: -12px; }
+
+  @media (max-width: 900px) {
+    .hero .display { grid-column: 1 / -1; }
+    .hero-aside { grid-column: 1 / -1; order: 3; }
+    .hero-aside dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 20px; }
+    .hero .standfirst, .hero .hero-go { grid-column: 1 / -1; }
+  }
+
+  /* ---------------- home: the board ----------------
+     Unequal blocks on a 12-column grid. The 1px gaps show the ink
+     underneath, so every block is ruled off without a single border
+     being drawn twice. */
+
+  .board {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--ink);
+    border: 1px solid var(--ink);
+    margin-top: clamp(56px, 8vw, 104px);
+  }
+  .block {
     display: flex;
-    flex-wrap: wrap;
-    gap: 4px 22px;
-    font-family: var(--font-mark);
-    font-size: 12px;
-    letter-spacing: .05em;
-    color: var(--ink-soft);
-    font-variant-numeric: tabular-nums;
+    flex-direction: column;
+    gap: 14px;
+    padding: clamp(20px, 2.6vw, 32px);
+    background: var(--paper);
+    text-decoration: none;
+    color: inherit;
+    transition: background .12s;
+  }
+  a.block:hover { background: var(--paper-2); }
+  a.block:hover .go { color: var(--red); }
+  .block .go { margin-top: auto; align-self: flex-start; }
+  .block h2, .block h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
     margin: 0;
-  }
-  .facts b { font-weight: 400; color: var(--red-pen); }
-
-  /* a card clipped onto the page — deliberately unruled */
-  .card {
-    background: var(--sheet);
-    border: 1px solid var(--hairline);
-    box-shadow: 0 6px 14px -10px rgba(30,34,28,.5);
-    padding: clamp(18px, 2.6vw, 26px);
-    max-width: 720px;
+    letter-spacing: -.02em;
+    line-height: 1;
   }
 
-  .scrub-head {
+  .b-episode { grid-column: 1 / 8; grid-row: span 2; gap: 22px; }
+  .b-episode h2 { font-size: clamp(38px, 4.6vw, 64px); }
+  .b-episode blockquote {
+    margin: 12px 0 8px;
+    padding-left: 22px;
+    border-left: 4px solid var(--red);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(26px, 3vw, 40px);
+    line-height: 1.1;
+    letter-spacing: -.015em;
+    max-width: 20ch;
+  }
+  .b-episode blockquote cite {
+    display: block;
+    margin-top: 14px;
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-size: 12px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+
+  .b-hosts { grid-column: 8 / 13; }
+  .b-hosts .names { font-family: var(--font-display); font-size: clamp(30px, 3vw, 42px); line-height: 1.02; letter-spacing: -.02em; margin: 0; }
+  .b-hosts .names span { display: block; }
+  .b-hosts .names span:last-child { color: var(--grey); }
+
+  .b-listen { grid-column: 8 / 13; background: var(--ink); color: var(--paper); }
+  a.b-listen:hover { background: #222; }
+  .b-listen .label { color: #9C9A92; }
+  .b-listen h3 { font-size: clamp(30px, 3vw, 42px); }
+  a.b-listen:hover .go { color: var(--paper); }
+
+  .b-count { grid-column: 1 / 5; flex-direction: row; align-items: flex-end; gap: 18px; }
+  .b-count .big {
+    font-family: var(--font-display);
+    font-size: clamp(110px, 13vw, 190px);
+    line-height: .72;
+    letter-spacing: -.05em;
+    color: var(--red);
+  }
+  .b-count p { margin: 0; font-size: 16px; line-height: 1.35; max-width: 14ch; padding-bottom: 4px; }
+
+  .b-rule { grid-column: 5 / 13; }
+  .b-rule h3 { font-size: clamp(30px, 3.4vw, 48px); max-width: 22ch; }
+
+  @media (max-width: 900px) {
+    .b-episode, .b-hosts, .b-listen, .b-count, .b-rule { grid-column: 1 / -1; grid-row: auto; }
+  }
+
+  /* ---------------- episode: split screen ---------------- */
+
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(32px, 5vw, 72px);
+    align-items: start;
+  }
+  .split-left {
+    position: sticky;
+    top: 88px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .split-left .head { font-size: clamp(48px, 6.4vw, 96px); }
+  .split-right { display: flex; flex-direction: column; gap: 48px; }
+
+  .meta { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+
+  @media (max-width: 900px) {
+    .split { grid-template-columns: minmax(0, 1fr); }
+    .split-left { position: static; }
+  }
+
+  /* the player — a boxed instrument, deliberately plain */
+  .player { border: 1px solid var(--ink); background: var(--paper); }
+  .player-head {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
-    gap: 16px;
-    font-family: var(--font-mark);
-    font-size: 11.5px;
-    letter-spacing: .13em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-    line-height: 1.6;
+    align-items: stretch;
+    border-bottom: 1px solid var(--ink);
   }
+  .player-head .label { padding: 12px 16px; color: var(--ink); }
   .clock {
-    color: var(--ink);
+    font-family: var(--font-mono);
     font-size: 13px;
-    letter-spacing: .04em;
+    padding: 12px 16px;
+    background: var(--ink);
+    color: var(--paper);
     font-variant-numeric: tabular-nums;
+    white-space: nowrap;
   }
+  .player-body { padding: 20px 16px 16px; }
 
   #wave {
     display: block;
     width: 100%;
-    height: 90px;
-    margin-top: 14px;
+    height: 110px;
     cursor: ew-resize;
     touch-action: pan-y;
   }
 
   .readout {
-    border-top: 1px solid var(--hairline);
-    margin-top: 16px;
-    padding-top: 16px;
-    display: grid;
-    grid-template-columns: 74px minmax(0, 1fr);
-    gap: 4px 16px;
-    align-content: start;
-    min-height: 130px;
+    border-top: 1px solid var(--ink);
+    padding: 22px 16px 24px;
+    min-height: 190px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
-  .readout .tc {
-    font-family: var(--font-mark);
-    font-size: 12px;
-    color: var(--ink-faint);
-    font-variant-numeric: tabular-nums;
-    padding-top: 6px;
-  }
-  .readout .said {
-    margin: 0;
-    font-size: 19px;
-    line-height: 1.48;
-    max-width: 46ch;
-  }
+  .readout-top { display: flex; gap: 14px; align-items: baseline; }
   .readout .who {
-    font-family: var(--font-mark);
-    font-size: 11.5px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
     letter-spacing: .1em;
     text-transform: uppercase;
-    color: var(--pen);
-    margin-right: 9px;
   }
-  .readout[data-speaker="guest"] .who { color: var(--red-pen); }
-
-  .fineprint {
-    font-family: var(--font-mark);
-    font-size: 11.5px;
-    letter-spacing: .06em;
-    color: var(--ink-faint);
+  .readout[data-speaker="guest"] .who { color: var(--red); }
+  .readout .tc { font-family: var(--font-mono); font-size: 12px; color: var(--grey); font-variant-numeric: tabular-nums; }
+  .readout .said {
     margin: 0;
-    line-height: 1.7;
+    font-family: var(--font-display);
+    font-size: clamp(26px, 2.8vw, 36px);
+    line-height: 1.12;
+    letter-spacing: -.012em;
+    text-wrap: pretty;
   }
+  .readout[data-speaker="guest"] .said { font-style: italic; }
 
-  @media (max-width: 560px) {
-    .readout { grid-template-columns: minmax(0, 1fr); }
-    .readout .tc { padding-top: 0; }
+  .keys {
+    border-top: 1px solid var(--rule-soft);
+    padding: 10px 16px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--grey);
+    margin: 0;
   }
 
   /* ---------------- show notes ---------------- */
 
-  .notes { list-style: none; margin: 0; padding: 0; max-width: 58ch; }
+  .notes { list-style: none; margin: 14px 0 0; padding: 0; border-top: 1px solid var(--ink); }
   .notes li {
     display: grid;
-    grid-template-columns: 62px minmax(0, 1fr);
+    grid-template-columns: 84px minmax(0, 1fr);
     gap: 16px;
-    padding: 9px 0;
-    border-bottom: 1px solid var(--hairline);
+    align-items: baseline;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule-soft);
   }
-  .notes .at {
-    font-family: var(--font-mark);
-    font-size: 12px;
-    color: var(--ink-faint);
-    font-variant-numeric: tabular-nums;
-    line-height: 1.7;
-  }
+  .notes .at { font-family: var(--font-mono); font-size: 13px; color: var(--grey); font-variant-numeric: tabular-nums; }
   /* The timecodes are buttons — the show notes and the scrubber are the same
-     tape, so a chapter mark should be able to move it. Styled to sit exactly
-     where the plain timecode sat; only the underline on hover gives it away. */
+     tape, so a chapter mark should be able to move it. */
   button.at {
     appearance: none;
     -webkit-appearance: none;
-    background: none;
-    border: 0;
-    border-bottom: 1px solid transparent;
-    padding: 0;
     justify-self: start;
-    text-align: left;
+    background: none;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    padding: 3px 8px;
     cursor: pointer;
-    transition: color .16s ease, border-color .16s ease;
+    transition: background .12s, color .12s, border-color .12s;
   }
-  button.at:hover { color: var(--pen); border-bottom-color: var(--pen); }
-  .notes li:last-child { border-bottom: 0; }
-  .notes span:last-child { line-height: 1.55; }
+  button.at:hover { background: var(--red); border-color: var(--red); color: var(--paper); }
+  .notes span:last-child { font-size: 18px; line-height: 1.4; }
 
-  /* ---------------- people ---------------- */
+  /* ---------------- hosts: ruled rows, not cards ---------------- */
 
-  .people { display: grid; grid-template-columns: repeat(auto-fit, minmax(258px, 1fr)); gap: 34px; }
-  .person { display: flex; flex-direction: column; gap: 8px; }
-  .person .role {
-    font-family: var(--font-mark);
-    font-size: 11.5px;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
+  .people { margin-top: clamp(40px, 6vw, 72px); border-top: 1px solid var(--ink); }
+  .person {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 2fr) minmax(0, 5fr);
+    gap: 24px;
+    align-items: baseline;
+    padding-block: clamp(22px, 3vw, 36px);
+    border-bottom: 1px solid var(--ink);
   }
-  .person .nm { font-size: 23px; line-height: 1.2; }
-  .person p { margin: 0; font-size: 16px; line-height: 1.55; color: var(--ink-soft); max-width: 40ch; }
+  .person .nm {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 4.4vw, 64px);
+    line-height: .95;
+    letter-spacing: -.025em;
+  }
+  .person:first-child .nm { font-size: clamp(44px, 6vw, 88px); }
+  .person p { margin: 0; color: var(--ink-2); max-width: 44ch; }
+
+  @media (max-width: 760px) {
+    .person { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  }
 
   /* ---------------- listen ---------------- */
 
-  .platforms { display: flex; flex-wrap: wrap; gap: 9px; }
+  .listen-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(32px, 5vw, 72px);
+    margin-top: clamp(40px, 6vw, 72px);
+    align-items: start;
+  }
+  @media (max-width: 900px) { .listen-grid { grid-template-columns: minmax(0, 1fr); } }
+
+  .platforms { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
   .platforms a {
-    font-family: var(--font-mark);
-    font-size: 12px;
-    letter-spacing: .07em;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 16px 4px;
+    border-bottom: 1px solid var(--ink);
     text-decoration: none;
-    color: var(--ink);
-    background: var(--sheet);
-    border: 1px solid var(--hairline);
-    padding: 9px 15px;
-    transition: border-color .16s ease, background .16s ease;
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3vw, 40px);
+    line-height: 1.1;
+    letter-spacing: -.015em;
+    transition: background .12s, color .12s, padding .12s;
   }
-  .platforms a:hover { border-color: var(--pen); background: var(--sheet-sunk); }
+  .platforms a::after { content: "↗"; font-family: var(--font-mono); font-size: 16px; }
+  .platforms a:hover { background: var(--ink); color: var(--paper); padding-inline: 14px; }
 
-  .signup { display: flex; flex-wrap: wrap; gap: 9px; max-width: 470px; }
+  .letter { border: 1px solid var(--ink); padding: clamp(22px, 3vw, 32px); display: flex; flex-direction: column; gap: 16px; }
+  .letter h3 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 40px; line-height: 1; letter-spacing: -.02em; }
+  .letter .prose { font-size: 16px; }
+
+  .signup { display: flex; border: 1px solid var(--ink); }
+  .signup:focus-within { outline: 2px solid var(--red); outline-offset: 2px; }
   .signup input {
-    flex: 1 1 210px;
+    flex: 1 1 auto;
     min-width: 0;
-    font-family: var(--font-mark);
-    font-size: 13px;
-    padding: 12px 14px;
-    background: var(--sheet);
-    border: 1px solid var(--hairline);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    padding: 14px;
+    border: 0;
+    background: var(--paper);
     color: var(--ink);
-    border-radius: 0;
+    outline: none;
   }
-  .signup input::placeholder { color: var(--ink-faint); }
-  .signup input:focus { border-color: var(--pen); }
+  .signup input::placeholder { color: var(--grey); }
+  .signup input[aria-invalid="true"] { color: var(--red); }
   .signup button {
-    font-family: var(--font-mark);
-    font-size: 12px;
-    letter-spacing: .12em;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    letter-spacing: .08em;
     text-transform: uppercase;
-    padding: 12px 20px;
+    padding: 14px 20px;
+    border: 0;
+    border-left: 1px solid var(--ink);
     background: var(--ink);
-    color: var(--sheet);
-    border: 1px solid var(--ink);
+    color: var(--paper);
     cursor: pointer;
-    transition: background .16s ease, border-color .16s ease;
+    transition: background .12s;
   }
-  .signup button:hover { background: var(--pen); border-color: var(--pen); }
+  .signup button:hover { background: var(--red); }
 
-  .note-line {
-    font-family: var(--font-mark);
-    font-size: 12px;
-    color: var(--ink-soft);
+  .note-line { font-family: var(--font-mono); font-size: 12.5px; color: var(--ink-2); margin: 0; min-height: 1.5em; }
+  .note-line.bad { color: var(--red); }
+
+  /* ---------------- about ---------------- */
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 24px;
+    row-gap: clamp(40px, 6vw, 72px);
+    margin-top: clamp(40px, 6vw, 72px);
+  }
+  .about-grid .body { grid-column: 4 / 11; }
+  .about-grid .body .prose:first-child::first-letter {
+    float: left;
+    font-family: var(--font-display);
+    font-size: 5.6em;
+    line-height: .8;
+    padding: 6px 12px 0 0;
+    color: var(--red);
+  }
+  .the-rule {
+    grid-column: 1 / -1;
+    background: var(--ink);
+    color: var(--paper);
+    padding: clamp(28px, 5vw, 64px);
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+    gap: 24px;
+  }
+  .the-rule .label { color: #9C9A92; }
+  .the-rule p.big {
     margin: 0;
-    min-height: 1.4em;
-    line-height: 1.6;
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4.4vw, 64px);
+    line-height: 1.02;
+    letter-spacing: -.02em;
+  }
+  .the-rule p.big em { color: var(--red); }
+  .about-grid .pitch { grid-column: 4 / 11; }
+
+  @media (max-width: 900px) {
+    .about-grid .body, .about-grid .pitch { grid-column: 1 / -1; }
+    .the-rule { grid-template-columns: minmax(0, 1fr); }
   }
 
-  /* ---------------- views ---------------- */
+  /* ---------------- footer ---------------- */
 
-  .view[hidden] { display: none; }
-  .view { display: flex; flex-direction: column; gap: var(--u); }
-  .view:focus { outline: none; }
-
-  .colophon {
-    max-width: 1000px;
-    margin: 0 auto clamp(28px, 5vw, 56px);
-    padding-inline: clamp(24px, 5vw, 40px);
-    font-family: var(--font-mark);
-    font-size: 11.5px;
-    letter-spacing: .05em;
-    line-height: 1.9;
-    color: #4A4A3C;
+  .colophon { background: var(--ink); color: var(--paper); }
+  .colophon .wrap { padding-block: clamp(32px, 5vw, 56px) 28px; }
+  .colophon .sign {
+    font-family: var(--font-display);
+    font-size: clamp(56px, 13.5vw, 196px);
+    line-height: .8;
+    letter-spacing: -.04em;
+    margin: 0 0 clamp(24px, 4vw, 40px);
+    white-space: nowrap;
+    overflow: hidden;
   }
-  .colophon p { margin: 0; max-width: 60ch; }
+  .colophon .sign em { color: var(--red); }
+  .colophon .rows {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px 24px;
+    border-top: 1px solid #3A3A38;
+    padding-top: 16px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: .04em;
+    color: #9C9A92;
+  }
+  .colophon .rows p { margin: 0; }
 
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      transition-duration: .001ms !important;
-      animation-duration: .001ms !important;
-    }
+    *, *::before, *::after { transition-duration: .001ms !important; animation-duration: .001ms !important; }
   }
 
   /* ---------------- print ----------------
-     Paper asked to become paper. Routing is a screen idea, so print ignores
-     it and lays the whole notebook out end to end, one section per sheet. */
+     Routing is a screen idea, so print ignores it and lays every section
+     out end to end, one per page. */
 
   @media print {
     body { background: #fff; }
-    .book { max-width: none; margin: 0; padding: 0; }
-    .sheet {
-      border: 0;
-      box-shadow: none;
-      padding: 0;
-      min-height: 0;
-      overflow: visible;
-    }
-    body[data-view="contents"],
-    body[data-view="contents"] .book,
-    body[data-view="contents"] .sheet { height: auto; overflow: visible; }
-    body[data-view="contents"] .colophon { display: block; }
-
-    .view[hidden] { display: flex !important; }
+    .view[hidden] { display: block !important; }
     .view + .view { break-before: page; }
-    .entry, .person, .notes li { break-inside: avoid; }
-
-    .holes, .sheet::before, .entry .tongue,
-    .card, .signup, .platforms, .back, .if-script { display: none !important; }
-    .ruled { background-image: none; }
+    .block, .person, .notes li { break-inside: avoid; }
+    .masthead, .player, .signup, .if-script, .colophon .sign { display: none !important; }
+    .split-left { position: static; }
   }
 </style>
 
 <noscript>
   <style>
-    /* No script means no routing, so the notebook stops pretending to be a
-       stack of pages and becomes one continuous read. The contents links
-       still work — they are real fragments pointing at real sections. */
-    .view[hidden] { display: flex !important; }
-    .view + .view {
-      margin-top: calc(var(--u) * 2);
-      padding-top: calc(var(--u) * 2);
-      border-top: 1px solid var(--hairline);
-    }
-    /* The scrubber is script all the way down; without it the card is
-       furniture, the chapter marks are text again, and nothing should
-       advertise an interaction that isn't there. */
-    .card { display: none !important; }
-    .if-script { display: none; }
-    button.at { cursor: default; }
-    button.at:hover { color: var(--ink-faint); border-bottom-color: transparent; }
+    /* No script means no routing, so every section shows in one continuous
+       read. The nav links still work — they are real fragments pointing at
+       real sections. */
+    .view[hidden] { display: block !important; }
+    .view + .view { border-top: 1px solid var(--ink); }
+    /* The scrubber is script all the way down; without it the player is
+       furniture and the chapter marks are just times. */
+    .player, .if-script { display: none !important; }
+    button.at { cursor: default; border-color: transparent; padding-inline: 0; }
+    button.at:hover { background: none; color: var(--grey); border-color: transparent; }
   </style>
 </noscript>
 
 </head>
 <body>
-<main class="book">
-  <div class="sheet">
-    <span class="holes" aria-hidden="true"><i></i><i></i><i></i></span>
 
-    <!-- ============ DASHBOARD / CONTENTS ============ -->
-    <section class="view" id="contents" tabindex="-1" aria-label="Contents">
-      <div class="stack-tight">
-        <p class="eyebrow">Within Earshot &nbsp;·&nbsp; notebook one &nbsp;·&nbsp; 2026</p>
-        <h1 class="display">The machines moved in. <em>Nobody knocked.</em></h1>
-      </div>
-
-      <p class="sub">
-        Artificial intelligence where it actually lands — the triage desk, the classroom, the
-        kitchen table. We talk to the people holding it, not the people selling it.
-      </p>
-
-      <p class="annot">One episode so far. This is all of it.</p>
-
-      <nav class="contents" aria-label="Sections">
-        <a class="entry" href="#episode" data-tab="a">
-          <span class="pg">p. 01</span>
-          <span class="name">The Episode</span>
-          <span></span>
-          <span class="gloss">Ep. 01 — The Nurse and the Night Shift. 48 min.</span>
-          <span class="tongue" aria-hidden="true"></span>
-        </a>
-
-        <a class="entry" href="#hosts" data-tab="b">
-          <span class="pg">p. 09</span>
-          <span class="name">Who's Talking</span>
-          <span></span>
-          <span class="gloss">Two hosts, one producer, and where each came from.</span>
-          <span class="tongue" aria-hidden="true"></span>
-        </a>
-
-        <a class="entry" href="#listen" data-tab="c">
-          <span class="pg">p. 14</span>
-          <span class="name">Listen &amp; Subscribe</span>
-          <span></span>
-          <span class="gloss">Podcast apps, the feed, and the letter after each episode.</span>
-          <span class="tongue" aria-hidden="true"></span>
-        </a>
-
-        <a class="entry" href="#about" data-tab="d">
-          <span class="pg">p. 18</span>
-          <span class="name">About the Show</span>
-          <span></span>
-          <span class="gloss">Why it exists, and the rule every interview is held to.</span>
-          <span class="tongue" aria-hidden="true"></span>
-        </a>
-      </nav>
-
-      <p class="fineprint home-foot">
-        Recorded in Providence &middot; Demonstration site — everyone here is invented
-      </p>
-    </section>
-
-    <!-- ============ EPISODE ============ -->
-    <section class="view" id="episode" tabindex="-1" hidden aria-label="The Episode">
-      <a class="back" href="#contents">&larr; Contents</a>
-
-      <div class="stack-tight">
-        <p class="facts">
-          <span><b>Ep. 01</b></span>
-          <span>22 July 2026</span>
-          <span>48:12</span>
-        </p>
-        <h2 class="head">The Nurse and the Night Shift</h2>
-      </div>
-
-      <p class="prose ruled">
-        Hollis Nwankwo has been a charge nurse in the same emergency department for eleven years.
-        For the last three, a triage model has assigned every patient a number before they reach
-        the desk. Hollis talks about what it is like to have an opinion about someone you have not
-        met yet — and why, at two in the morning, giving that number up is unthinkable.
-      </p>
-
-      <div class="card">
-        <div class="scrub-head">
-          <span>Waveform — drag to read along</span>
-          <span class="clock" id="clock">00:00 / 48:12</span>
-        </div>
-
-        <canvas id="wave"
-                role="slider"
-                tabindex="0"
-                aria-label="Transcript scrubber for episode 1"
-                aria-valuemin="0"
-                aria-valuemax="2892"
-                aria-valuenow="0"
-                aria-valuetext="00:00"></canvas>
-
-        <div class="readout" id="readout" data-speaker="host" aria-live="polite">
-          <span class="tc" id="ro-time">00:00</span>
-          <p class="said"><span class="who" id="ro-who">Mara</span><span id="ro-text"></span></p>
-        </div>
-
-        <p class="fineprint" style="margin-top: 14px;">
-          Arrow keys nudge 15 seconds &middot; Home and End jump to the edges
-        </p>
-      </div>
-
-      <div class="stack-tight">
-        <p class="eyebrow">In this episode<span class="if-script">&nbsp;&middot;&nbsp; a time moves the tape</span></p>
-        <ul class="notes" id="notes">
-          <li><button type="button" class="at" data-t="161">02:41</button><span>What a bad night looks like from inside the software</span></li>
-          <li><button type="button" class="at" data-t="425">07:05</button><span>The score arrives before the patient does</span></li>
-          <li><button type="button" class="at" data-t="1188">19:48</button><span>The man who came through as a two</span></li>
-          <li><button type="button" class="at" data-t="1897">31:37</button><span>Fear lives in the body, and the model reads bodies</span></li>
-          <li><button type="button" class="at" data-t="2479">41:19</button><span>The colleague who is never tired</span></li>
-        </ul>
-      </div>
-
-      <p class="fineprint">
-        Recorded 9 July 2026 in Providence. Produced by Ines Ferreira.
-        Full transcript available with the episode on every podcast app.
-      </p>
-    </section>
-
-    <!-- ============ HOSTS ============ -->
-    <section class="view" id="hosts" tabindex="-1" hidden aria-label="Who's Talking">
-      <a class="back" href="#contents">&larr; Contents</a>
-
-      <h2 class="head">Two people who came at this from opposite ends</h2>
-
-      <div class="people">
-        <div class="person">
-          <span class="role">Host</span>
-          <span class="nm">Mara Ostrowski</span>
-          <p>
-            Nine years as a hospital chaplain before this, which is nine years of sitting with
-            people on the worst day of their year. Asks the question everyone in the room is
-            thinking and nobody has said out loud.
-          </p>
-        </div>
-        <div class="person">
-          <span class="role">Host</span>
-          <span class="nm">Devon Achebe</span>
-          <p>
-            Spent six years building recommendation systems, then stopped. Knows exactly how the
-            thing works, which mostly means knowing where people hide behind the phrase
-            &ldquo;it's just math.&rdquo;
-          </p>
-        </div>
-        <div class="person">
-          <span class="role">Producer</span>
-          <span class="nm">Ines Ferreira</span>
-          <p>
-            Cuts the tape and keeps the pauses in. Believes a silence is evidence, and that the
-            most honest four seconds of most interviews happen after the answer.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ LISTEN ============ -->
-    <section class="view" id="listen" tabindex="-1" hidden aria-label="Listen and Subscribe">
-      <a class="back" href="#contents">&larr; Contents</a>
-
-      <h2 class="head">Wherever you already are</h2>
-
-      <div class="platforms">
-        <a href="#listen">Apple&nbsp;Podcasts</a>
-        <a href="#listen">Spotify</a>
-        <a href="#listen">Overcast</a>
-        <a href="#listen">Pocket&nbsp;Casts</a>
-        <a href="#listen">YouTube</a>
-        <a href="#listen">RSS</a>
-      </div>
-
-      <div class="stack-tight">
-        <p class="eyebrow">The letter</p>
-        <p class="prose">
-          One email the Thursday after each episode: the part of the conversation that did not fit,
-          plus whatever the guest told us to go read.
-        </p>
-      </div>
-
-      <form class="signup" id="signup" novalidate>
-        <label for="email" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;">Email address</label>
-        <input id="email" type="email" name="email" placeholder="you@example.com" autocomplete="email" />
-        <button type="submit">Sign up</button>
-      </form>
-      <p class="note-line" id="signup-note"></p>
-    </section>
-
-    <!-- ============ ABOUT ============ -->
-    <section class="view" id="about" tabindex="-1" hidden aria-label="About the Show">
-      <a class="back" href="#contents">&larr; Contents</a>
-
-      <h2 class="head">About the show</h2>
-
-      <p class="prose ruled">
-        Most of what gets said about artificial intelligence is said by people with something to
-        launch. Within Earshot is the other conversation: one guest at a time, someone who did not
-        choose this technology but now works next to it every day. A nurse. A teacher. An
-        interpreter. We ask what changed, in ordinary detail, and we stay long enough to get past
-        the first answer.
-      </p>
-
-      <p class="prose ruled">
-        Episodes run forty to sixty minutes and are edited lightly. Nothing is scripted. We keep
-        the pauses in, because the pause is usually where the person is deciding whether to tell
-        you the true version.
-      </p>
-
-      <div class="stack-tight">
-        <p class="eyebrow">The rule</p>
-        <p class="prose">
-          No guest is asked to predict the future. Everyone is asked what happened on a specific
-          day. If an answer can be given at a conference, we have asked the wrong question.
-        </p>
-      </div>
-
-      <p class="annot">
-        Pitch a guest: someone whose job changed and who has not been asked about it.
-      </p>
-    </section>
-
+<header class="masthead">
+  <div class="wrap masthead-in">
+    <a class="brand" href="#contents" aria-label="Within Earshot, home"><i aria-hidden="true"></i><span class="brand-name">Within Earshot</span></a>
+    <nav class="nav" aria-label="Primary">
+      <a href="#episode">Episode</a>
+      <a href="#hosts">Hosts</a>
+      <a href="#about">About</a>
+      <a class="sub-link" href="#listen">Subscribe</a>
+    </nav>
   </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ HOME ============ -->
+  <section class="view" id="contents" tabindex="-1" aria-label="Home">
+    <div class="hero">
+      <h1 class="display">The machines moved in. <em>Nobody knocked.</em></h1>
+
+      <aside class="hero-aside" aria-label="This issue">
+        <dl>
+          <div><dt>Issue</dt><dd>No. 01</dd></div>
+          <div><dt>Out</dt><dd>22 July 2026</dd></div>
+          <div><dt>Guest</dt><dd>A night-shift charge nurse</dd></div>
+          <div><dt>From</dt><dd>A garage in Providence</dd></div>
+        </dl>
+      </aside>
+
+      <p class="standfirst">
+        AI where it actually lands — the triage desk, the classroom, the kitchen table.
+        We talk to the people holding it, not the people selling it.
+      </p>
+      <p class="hero-go"><a class="go" href="#episode">Read the first episode →</a></p>
+    </div>
+
+    <nav class="board" aria-label="Sections">
+      <a class="block b-episode" href="#episode">
+        <span class="label red">Episode 01 · 48 min</span>
+        <h2>The Nurse and the Night Shift</h2>
+        <blockquote>
+          “At two in the morning it is the only colleague I have who is never tired.”
+          <cite>Hollis Nwankwo, charge nurse</cite>
+        </blockquote>
+        <span class="go">Drag through the tape →</span>
+      </a>
+
+      <a class="block b-hosts" href="#hosts">
+        <span class="label">Who's talking</span>
+        <p class="names"><span>Mara Ostrowski</span><span>Devon Achebe</span><span>Ines Ferreira</span></p>
+        <span class="go">A chaplain, an engineer, a producer →</span>
+      </a>
+
+      <a class="block b-listen" href="#listen">
+        <span class="label">Listen</span>
+        <h3>Six apps. One feed. One email after every episode.</h3>
+        <span class="go">Subscribe →</span>
+      </a>
+
+      <div class="block b-count">
+        <span class="big" aria-hidden="true">01</span>
+        <p>episode so far. This is all of it.</p>
+      </div>
+
+      <a class="block b-rule" href="#about">
+        <span class="label">The house rule</span>
+        <h3>Nobody predicts the future. Everybody tells us about a Tuesday.</h3>
+        <span class="go">Why the show exists →</span>
+      </a>
+    </nav>
+  </section>
+
+  <!-- ============ EPISODE ============ -->
+  <section class="view" id="episode" tabindex="-1" hidden aria-label="The Episode">
+    <div class="split">
+      <div class="split-left">
+        <p class="meta">
+          <span class="label red">Episode 01</span>
+          <span class="label">22 July 2026</span>
+          <span class="label">48 min</span>
+        </p>
+        <h2 class="head">The Nurse and the <em>Night Shift</em></h2>
+        <p class="standfirst">
+          Hollis Nwankwo has run the same emergency department desk for eleven years. For the last
+          three, a triage model has scored every patient before they reach it.
+        </p>
+        <p class="prose">
+          We talk about having an opinion of someone you haven't met yet — and why, at two in the
+          morning, giving that number up is unthinkable.
+        </p>
+        <p class="fineprint">
+          Recorded 9 July 2026 in Providence. Produced by Ines Ferreira. The full transcript ships
+          with the episode in every podcast app.
+        </p>
+      </div>
+
+      <div class="split-right">
+        <div class="player">
+          <div class="player-head">
+            <span class="label">Drag the tape to read along</span>
+            <span class="clock" id="clock">00:00 / 48:12</span>
+          </div>
+
+          <div class="player-body">
+            <canvas id="wave"
+                    role="slider"
+                    tabindex="0"
+                    aria-label="Transcript scrubber for episode 1"
+                    aria-valuemin="0"
+                    aria-valuemax="2892"
+                    aria-valuenow="0"
+                    aria-valuetext="00:00"></canvas>
+          </div>
+
+          <div class="readout" id="readout" data-speaker="host" aria-live="polite">
+            <div class="readout-top">
+              <span class="who" id="ro-who">Mara</span>
+              <span class="tc" id="ro-time">00:00</span>
+            </div>
+            <p class="said" id="ro-text"></p>
+          </div>
+
+          <p class="keys">← → nudge 15s &nbsp;/&nbsp; PgUp PgDn 2 min &nbsp;/&nbsp; Home End jump to the edges</p>
+        </div>
+
+        <div>
+          <h3 class="label">In this episode<span class="if-script"> — click a time to jump there</span></h3>
+          <ul class="notes" id="notes">
+            <li><button type="button" class="at" data-t="161">02:41</button><span>What a bad night looks like from inside the software</span></li>
+            <li><button type="button" class="at" data-t="425">07:05</button><span>The score arrives before the patient does</span></li>
+            <li><button type="button" class="at" data-t="1188">19:48</button><span>The man who came through as a two</span></li>
+            <li><button type="button" class="at" data-t="1897">31:37</button><span>Fear lives in the body, and the model reads bodies</span></li>
+            <li><button type="button" class="at" data-t="2479">41:19</button><span>The colleague who is never tired</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOSTS ============ -->
+  <section class="view" id="hosts" tabindex="-1" hidden aria-label="Who's Talking">
+    <p class="label red">Who's talking</p>
+    <h2 class="head" style="margin-top: 18px; max-width: 14ch;">Two people who came at this from <em>opposite ends</em></h2>
+
+    <div class="people">
+      <div class="person">
+        <span class="nm">Mara Ostrowski</span>
+        <span class="label">Host</span>
+        <p>
+          Nine years as a hospital chaplain, which is nine years of sitting with people on the
+          worst day of their year. Asks the question everyone in the room is thinking and nobody
+          has said out loud.
+        </p>
+      </div>
+      <div class="person">
+        <span class="nm">Devon Achebe</span>
+        <span class="label">Host</span>
+        <p>
+          Built recommendation systems for six years, then quit. Knows exactly how the thing works,
+          which mostly means knowing where people hide behind &ldquo;it's just math.&rdquo;
+        </p>
+      </div>
+      <div class="person">
+        <span class="nm">Ines Ferreira</span>
+        <span class="label">Producer</span>
+        <p>
+          Cuts the tape and leaves the pauses in. Thinks a silence counts as evidence, and that
+          the most honest four seconds of an interview come right after the answer.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LISTEN ============ -->
+  <section class="view" id="listen" tabindex="-1" hidden aria-label="Listen and Subscribe">
+    <p class="label red">Listen &amp; subscribe</p>
+    <h2 class="head" style="margin-top: 18px;">Wherever you <em>already are</em></h2>
+
+    <div class="listen-grid">
+      <ul class="platforms">
+        <li><a href="#listen">Apple Podcasts</a></li>
+        <li><a href="#listen">Spotify</a></li>
+        <li><a href="#listen">Overcast</a></li>
+        <li><a href="#listen">Pocket Casts</a></li>
+        <li><a href="#listen">YouTube</a></li>
+        <li><a href="#listen">RSS</a></li>
+      </ul>
+
+      <div class="letter">
+        <span class="label">The letter</span>
+        <h3>The bit that didn't fit.</h3>
+        <p class="prose">
+          One email, the Thursday after each episode: the part of the conversation we cut, plus
+          whatever the guest told us to go and read.
+        </p>
+        <form class="signup" id="signup" novalidate>
+          <label for="email" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;">Email address</label>
+          <input id="email" type="email" name="email" placeholder="you@example.com" autocomplete="email" aria-describedby="signup-note" />
+          <button type="submit">Sign up</button>
+        </form>
+        <p class="note-line" id="signup-note" role="status"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section class="view" id="about" tabindex="-1" hidden aria-label="About the Show">
+    <p class="label red">About the show</p>
+    <h2 class="head" style="margin-top: 18px; max-width: 12ch;">The other conversation <em>about AI</em></h2>
+
+    <div class="about-grid">
+      <div class="body">
+        <p class="prose">
+          Most of what gets said about artificial intelligence is said by people with something to
+          launch. This is the other conversation: one guest at a time, someone who didn't choose
+          this technology but now works next to it every day. A nurse. A teacher. An interpreter.
+          We ask what changed, in ordinary detail, and we stay long enough to get past the first
+          answer.
+        </p>
+        <p class="prose">
+          Episodes run forty to sixty minutes and are edited lightly. Nothing is scripted. We keep
+          the pauses in, because the pause is usually where someone decides whether to tell you
+          the true version.
+        </p>
+      </div>
+
+      <div class="the-rule">
+        <span class="label">The rule</span>
+        <p class="big">
+          No guest is asked to predict the future. Everyone is asked what happened on a specific
+          day. If the answer would work at a conference, <em>we asked the wrong question.</em>
+        </p>
+      </div>
+
+      <p class="pitch fineprint">
+        Know someone whose job changed and who hasn't been asked about it? That's who we want.
+      </p>
+    </div>
+  </section>
+
 </main>
 
 <footer class="colophon">
-  <p>
-    Within Earshot is an independent show, recorded in a converted garage in Providence.
-    &copy; 2026. This is a demonstration site — the people and the episode here are invented.
-  </p>
+  <div class="wrap">
+    <p class="sign" aria-hidden="true">Within <em>Earshot</em></p>
+    <div class="rows">
+      <p>&copy; 2026 · Recorded in a converted garage in Providence</p>
+      <p>Demonstration site — the people and the episode are invented</p>
+    </div>
+  </div>
 </footer>
 
 <script>
@@ -907,8 +884,7 @@
   "use strict";
 
   /* ==========================================================
-     Views — every section is reached from the contents page.
-     There is no persistent nav; the dashboard is the only door.
+     Views — hash routes, one section visible at a time.
      ========================================================== */
 
   var NAMES = ["contents", "episode", "hosts", "listen", "about"];
@@ -918,6 +894,8 @@
      block, which simply stops hiding them. */
   var views = {};
   NAMES.forEach(function (n) { views[n] = document.getElementById(n); });
+
+  var navLinks = document.querySelectorAll(".nav a");
 
   /* A hash route that never retitles the document leaves every history entry
      and every open tab reading the same thing. */
@@ -938,6 +916,11 @@
     NAMES.forEach(function (n) { views[n].hidden = (n !== want); });
     document.body.setAttribute("data-view", want);
     document.title = TITLES[want];
+
+    Array.prototype.forEach.call(navLinks, function (a) {
+      if (a.getAttribute("href") === "#" + want) { a.setAttribute("aria-current", "page"); }
+      else { a.removeAttribute("aria-current"); }
+    });
 
     if (fromUser) {
       window.scrollTo({ top: 0, behavior: "auto" });
@@ -1004,18 +987,18 @@
     return out;
   }
 
-  /* The palette is fixed for the life of the page — there is no dark variant
-     and no theme toggle — so it is read once. Reading it inside draw() meant
-     three forced style recalcs per pointer sample. */
+  /* The palette is fixed for the life of the page — light-only, no theme
+     toggle — so it is read once. Reading it inside draw() meant three
+     forced style recalcs per pointer sample. */
   var palette = null;
   function tokens() {
     if (!palette) {
       var cs = getComputedStyle(document.documentElement);
       palette = {
-        pen:   cs.getPropertyValue("--pen").trim(),
-        faint: cs.getPropertyValue("--ink-faint").trim(),
-        red:   cs.getPropertyValue("--red-pen").trim(),
-        rule:  cs.getPropertyValue("--margin-rule").trim()
+        ink:  cs.getPropertyValue("--ink").trim(),
+        idle: cs.getPropertyValue("--rule-soft").trim(),
+        grey: cs.getPropertyValue("--grey").trim(),
+        red:  cs.getPropertyValue("--red").trim()
       };
     }
     return palette;
@@ -1044,30 +1027,30 @@
     if (amps.length !== count) { amps = buildAmps(count); }
 
     var c = tokens();
-    var mid = h / 2;
+    var TICK = 10;                      // room reserved under the bars for chapter marks
+    var body = h - TICK - 2;
+    var mid = body / 2;
     var ratio = position / DURATION;
-    var TICK = 7;                       // room reserved under the bars for the marks
-    var body = h - TICK;
 
     for (var i = 0; i < count; i++) {
-      var bh = Math.max(2, amps[i] * (body - 6));
-      var passed = (i / count) <= ratio;
-      ctx.fillStyle = passed ? c.pen : c.faint;
-      ctx.globalAlpha = passed ? 1 : 0.32;
-      ctx.fillRect(i * (BAR + GAP), mid - TICK / 2 - bh / 2, BAR, bh);
+      var bh = Math.max(2, amps[i] * (body - 4));
+      ctx.fillStyle = (i / count) <= ratio ? c.ink : c.idle;
+      ctx.fillRect(i * (BAR + GAP), mid - bh / 2, BAR, bh);
     }
 
     /* Chapter marks. Without them a drag is a blind hunt for the next line;
        with them the waveform tells you where the tape has something to say. */
+    ctx.fillStyle = c.ink;
+    ctx.fillRect(0, h - TICK - 1, w, 1);
     var here = markerAt(position);
     for (var k = 0; k < markers.length; k++) {
       var on = markers[k] === here;
-      ctx.globalAlpha = on ? 1 : 0.55;
-      ctx.fillStyle = on ? c.red : c.rule;
-      ctx.fillRect(Math.min(w - 1, (markers[k].t / DURATION) * w), h - TICK, 1, TICK);
+      ctx.fillStyle = on ? c.red : c.ink;
+      var x = Math.min(w - 3, (markers[k].t / DURATION) * w);
+      ctx.fillRect(x, h - TICK, on ? 3 : 1, TICK);
     }
 
-    ctx.globalAlpha = 1;
+    /* playhead */
     ctx.fillStyle = c.red;
     ctx.fillRect(Math.min(w - 2, Math.max(0, ratio * w)), 0, 2, h);
   }
@@ -1132,7 +1115,6 @@
     if (canvas.hasPointerCapture(e.pointerId)) { canvas.releasePointerCapture(e.pointerId); }
   });
   canvas.addEventListener("pointercancel", function () { dragging = false; });
-  canvas.addEventListener("mousemove", function (e) { if (!dragging) { seek(e); } });
 
   canvas.addEventListener("keydown", function (e) {
     var handled = true;
@@ -1161,7 +1143,7 @@
     if (!hit) { return; }
     setPosition(Number(hit.getAttribute("data-t")));
     canvas.focus({ preventScroll: true });
-    canvas.scrollIntoView({ block: "nearest", behavior: reduced ? "auto" : "smooth" });
+    canvas.scrollIntoView({ block: "center", behavior: reduced ? "auto" : "smooth" });
   });
 
   /* ==========================================================
@@ -1173,15 +1155,15 @@
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
-    var v = document.getElementById("email").value.trim();
+    var input = document.getElementById("email");
+    var v = input.value.trim();
     var at = v.indexOf("@");
-    if (at < 1 || v.lastIndexOf(".") < at) {
-      note.textContent = "That address is missing something — check for the @ and the domain.";
-      note.style.color = "var(--red-pen)";
-      return;
-    }
-    note.textContent = "This demo page is not connected to a mailing list, so nothing was sent.";
-    note.style.color = "var(--ink-soft)";
+    var bad = at < 1 || v.lastIndexOf(".") < at;
+    input.setAttribute("aria-invalid", String(bad));
+    note.classList.toggle("bad", bad);
+    note.textContent = bad
+      ? "That address is missing something — check for the @ and the domain."
+      : "This demo page isn't connected to a mailing list, so nothing was sent.";
   });
 
   /* boot */
@@ -1193,4 +1175,3 @@
 
 </body>
 </html>
-

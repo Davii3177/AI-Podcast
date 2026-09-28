@@ -4,7 +4,8 @@ A website for a podcast about artificial intelligence where it actually lands �
 the classroom, the kitchen table. The show talks to the people holding the technology, not the
 people selling it.
 
-Single self-contained page. No build step, no dependencies, no network requests.
+Single self-contained page. No build step and no dependencies. The only network request is one
+Google Fonts stylesheet for the heading typeface.
 
 ## Running it
 
@@ -22,53 +23,43 @@ python -m http.server 8000
 Everything lives in `index.html` — markup, styles, and script. It's one file on purpose: the site
 is small enough that splitting it would cost more than it saves.
 
-**Design.** A ruled notebook on a desk. Punched holes down the gutter, a pink margin rule, ballpoint
-blue-black ink on off-white paper, red pen for the guest's voice. Deliberately light-only — the CSS
-custom properties are declared once on `:root` and never redefined, so there is no dark variant to
-maintain and no half-styled state.
+**Design.** Editorial and high-contrast: black ink on warm newsprint, with a single signal red as
+the only accent. Corners are square everywhere (`border-radius: 0` is set globally) and there are
+no drop shadows. Blocks are separated by 1px black rules. The home page's blocks sit on a 1px-gap
+grid over an ink background, so each block is ruled off without any border being drawn twice. The
+layouts are deliberately asymmetric: the hero headline runs across ten of twelve columns next to a
+narrow "issue" sidebar, the home page mixes block sizes, and the episode page is a split screen
+whose left column stays put while the right column scrolls. There are no illustrations; big type
+is the focal point, whether that's the headline, a pull quote or the huge "01".
 
-Two typefaces, each doing a job:
+The site uses three typefaces, each doing a job:
 
-- a serif (Iowan Old Style / Palatino / Georgia) for anything a person says
-- a monospace (Cascadia / Consolas) for anything a machine measures — timecodes, page numbers, labels
+- Instrument Serif (Google Fonts) for headlines and anything a person says out loud
+- a system text serif (Charter / Iowan / Georgia) for body copy
+- a system monospace for labels, timecodes and navigation
 
-Both are system font stacks, so there are no webfont requests and nothing to fall back from.
+If the webfont never loads, the headings fall back to a system serif. The site is deliberately
+light-only: the CSS custom properties are declared once on `:root`, and the canvas reads them once
+at boot.
 
-**Navigation.** The contents page is the only door. There is no persistent nav bar; every section is
-reached from the home page, and the only way out of a section is `← Contents`. Routing is hash-based
-(`#episode`, `#hosts`, `#listen`, `#about`), so browser back works and sections are linkable, but you
-can't move laterally between them. Each route sets its own `document.title`, so history entries and
-open tabs are distinguishable.
+**Navigation.** A sticky top bar links to every section, and the current one is marked with
+`aria-current`. The home page also leads into each section through its cards. Routing is
+hash-based (`#episode`, `#hosts`, `#listen`, `#about`), so browser back works and sections are
+linkable. Each route sets its own `document.title`, so history entries and open tabs are
+distinguishable.
 
 The section ids *are* those fragments — `id="episode"`, not `id="view-episode"`. That is what makes
 the fallbacks work: with script disabled, the `<noscript>` block simply stops hiding the sections and
 the same links become ordinary in-page anchors down one continuous read. Printing does the same and
 puts each section on its own sheet.
 
-**The home page is pinned to one screen.** `body[data-view="contents"]` sets `overflow: hidden` and
-sizes the sheet to `100dvh`; the `.book` and `.sheet` clip rather than scroll, so no inner scrollbar
-can appear either. Type and spacing scale on `min(vw, vh)` so a short window shrinks the type instead
-of overflowing, and the home page runs a wider measure than the prose views on purpose — an extra
-wrapped line costs the same height whether or not it earns it, so the headline, the standfirst and
-the entry glosses are each given room to sit on as few lines as they need.
-
-The contents group is centred on the sheet rather than sprung apart. An earlier version anchored the
-index to the foot of the page with `margin-top: auto`, which meant all the leftover height collected
-into a single hole above it — and the shorter the copy, the bigger the hole. Centring spends it as
-even margin above and below, so the page reads as one compact block.
-
-Four breakpoints handle the sizes where scaling alone isn't enough. Above 940px tall the title and
-the entry padding grow, so the block scales with the sheet instead of sitting on it as a small island.
-Under 720px tall the margin annotation goes; under 580px tall the entry glosses and the footer line
-go; under 560px *wide* the glosses go too, since a narrow column doubles each one. Under 460px tall
-the page gives up the pin and scrolls, rather than clip the contents out of reach. Inner pages scroll
-normally at every size.
-
-The fit is verified, not assumed — it holds with no scroll and no clipping from 2560×1440 down to
-360×640, including 1366×768, 1280×720 and 390×844.
+**The home page** is an asymmetric hero (headline, "issue" sidebar, standfirst) over a board of
+unequal blocks: the episode with a pull quote, the hosts, an inverted listen block, a big "01"
+and the house rule. Everything collapses to a single column under 900px.
 
 **The scrubber.** Dragging across the episode waveform reveals the transcript line at that timestamp.
-There is no audio file and no fake progress bar — the interaction surfaces real text. The waveform
+There is no audio file and no fake progress bar — the interaction surfaces real text. Hovering alone
+does nothing, so a jump from the show notes isn't undone when the pointer crosses the waveform. The waveform
 itself is drawn on a canvas from a seeded PRNG, so it looks like speech and is identical on every
 visit. It works with a pointer, and with the keyboard (arrows nudge 15s, PageUp/PageDown 2 minutes,
 Home/End jump to the edges) via `role="slider"`.
@@ -99,11 +90,11 @@ from it at boot, so they cannot drift out of sync.
 | Episode length | `DURATION` (seconds) — display strings derive from it |
 | Show notes | `.notes` list — keep each `data-t` equal to its marker's `t` |
 | Hosts and producer | `.people` block in the hosts section |
-| Sections on the home page | `.entry` links in `<nav class="contents">` |
+| Sections on the home page | `.block` links in `<nav class="board">`, plus the masthead `.nav` |
 | Per-view page titles | `TITLES` map in the script |
 
-To add a second episode, add an `.entry` row to the contents page and a matching
-`<section class="view" id="…">` whose id is the fragment the entry links to, then add that name to
+To add a second episode, add a `.block` to the home page board and a matching
+`<section class="view" id="…">` whose id is the fragment the block links to, then add that name to
 both the `NAMES` array and the `TITLES` map in the script.
 
 ## Deploying

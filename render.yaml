@@ -1,7 +1,7 @@
 # Render blueprint — https://render.com/docs/blueprint-spec
 #
-# The site is one self-contained file with no dependencies and no network
-# requests, so there is nothing to build: Render serves the repo root as-is.
+# The site is one self-contained file with no dependencies (its only outside
+# request is a Google Fonts stylesheet), so there is nothing to build: Render serves the repo root as-is.
 # Pushing to main redeploys.
 
 services:
